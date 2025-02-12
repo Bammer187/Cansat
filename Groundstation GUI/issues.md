@@ -8,3 +8,4 @@
 1. `() ISSUE-006: update charts with reactive data`
 1. `(X) ISSUE-007: Include LineChart.vue in App.vue with testing data`
 1. `(X) ISSUE-008: update charts with reactive testing data`
+1. `(X) ISSUE-009: include four charts`

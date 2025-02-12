@@ -1,5 +1,10 @@
 <template>
-  <LineChart :chartData="data" :chartOptions="options"/>
+  <div class="chart-container">
+    <LineChart :chartData="data" :chartOptions="options"/>
+    <LineChart :chartData="data" :chartOptions="options"/>
+    <LineChart :chartData="data" :chartOptions="options"/>
+    <LineChart :chartData="data" :chartOptions="options"/>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -21,5 +26,16 @@ onMounted(() => {
 </script>
 
 <style scoped>
-
+.chart-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  width: 30vw;
+  height: 30vh;
+  margin-top: 20px;
+  margin-left: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 </style>
