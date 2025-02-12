@@ -1,8 +1,8 @@
 <template>
-
+  <Line :data="chartData" :options="chartOptions" />
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import {
   Chart as ChartJS,
   Title,
@@ -12,9 +12,23 @@ import {
   LineElement,
   CategoryScale,
   LinearScale,
-} from 'chart.js';
-import { Line } from 'vue-chartjs';
-import type { ChartData } from 'chart.js';
-import { ref } from 'vue';
+} from "chart.js";
+import { Line } from "vue-chartjs";
+import type { ChartData, ChartOptions } from "chart.js";
+import { ref } from "vue";
 
+defineProps<{
+  chartData: ChartData<'line'>;
+  chartOptions: ChartOptions<'line'>;
+}>();
+
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  PointElement,
+  LineElement,
+  CategoryScale,
+  LinearScale
+);
 </script>
