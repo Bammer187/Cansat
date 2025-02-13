@@ -3,7 +3,7 @@
     <div v-for="(chart, index) in chartConfig.charts.value" :key="chart.key" :class="`chart${index + 1}`">
       <LineChart
         :chartData="chartConfig.chartDataMap.value[chart.key]"
-        :chartOptions="chartConfig.chartOptions.value"
+        :chartOptions="chartConfig.chartOptionsMap.value[chart.key]"
       />
     </div>
 
