@@ -13,4 +13,5 @@
 1. `(X) ISSUE-011: create charts with for loop`
 1. `(X) ISSUE-012: Make chart x-axis time based`
 1. `() ISSUE-013: Make acceleration chart x-axis time based`
-1. `() ISSUE-014: different data selectable for temp, humi, air, part`
+1. `(X) ISSUE-014: different data selectable for temp, humi, air, part`
+1. `() ISSUE-015: button to temporarily pause chart updates`

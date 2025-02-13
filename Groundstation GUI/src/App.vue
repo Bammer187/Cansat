@@ -1,7 +1,10 @@
 <template>
   <div class="chart-container">
-    <div v-for="index in 4" :class="`chart${index}`">
-      <LineChart :chartData="chartConfig.chartData.value" :chartOptions="chartConfig.chartOptions.value" />
+    <div v-for="(chart, index) in chartConfig.charts.value" :key="chart.key" :class="`chart${index + 1}`">
+      <LineChart
+        :chartData="chartConfig.chartDataMap.value[chart.key]"
+        :chartOptions="chartConfig.chartOptions.value"
+      />
     </div>
 
     <div class="chart5">

@@ -2,23 +2,36 @@ import type { ChartData, ChartOptions } from "chart.js";
 import { ref } from "vue";
 
 const dataSize = 10;
-const readings = ref<number[]>(new Array(dataSize).fill(0));
 const labels = ref<string[]>(new Array(dataSize).fill("0"));
 
-export const chartData = ref<ChartData<'line'>>({
-  labels: labels.value,
-  datasets: [
-    {
-      label: "Testdata",
-      data: readings.value,
-      backgroundColor: "#f87979",
-      borderColor: "#f87979",
-      borderWidth: 1.2,
-      pointBorderColor: "#f87979",
-      pointRadius: 0.2,
-    },
-  ],
-});
+export const charts = ref([
+  { title: "Temperature", key: "Temperature", color: "red" },
+  { title: "Humidity", key: "Humidity", color: "blue" },
+  { title: "Air pressure", key: "Air pressure", color: "green" },
+  { title: "Particle concentration", key: "Particle concentration", color: "orange" },
+]);
+
+export const chartDataMap = ref<Record<string, ChartData<"line">>>(
+  Object.fromEntries(
+    charts.value.map(({ key, color }) => [
+      key,
+      {
+        labels: labels.value,
+        datasets: [
+          {
+            label: key,
+            data: new Array(dataSize).fill(0),
+            backgroundColor: color,
+            borderColor: color,
+            borderWidth: 1.2,
+            pointBorderColor: color,
+            pointRadius: 0.2,
+          },
+        ],
+      },
+    ])
+  )
+);
 
 export const chartOptions = ref<ChartOptions<'line'>>({
   responsive: true,
@@ -44,36 +57,35 @@ export const chartOptions = ref<ChartOptions<'line'>>({
   },
 });
 
-let currentTime = 0.0;
+let currentTime = 0;
 
 export const updateSensorData = () => {
   currentTime++;
-  const label = `${currentTime}`
-  const newReading = Math.floor(Math.random() * 1024);
+  const label = `${currentTime.toFixed(1)}`;
 
-  readings.value = [...readings.value, newReading];
   labels.value = [...labels.value, label];
-
-  if (readings.value.length > dataSize) {
-    readings.value.shift();
+  if (labels.value.length > dataSize) {
     labels.value.shift();
   }
 
-  chartData.value = {
-    labels: labels.value,
-    datasets: [
-      {
-        label: "Testdata",
-        data: readings.value,
-        backgroundColor: "#f87979",
-        borderColor: "#f87979",
-        borderWidth: 1.2,
-        pointBorderColor: "#f87979",
-        pointRadius: 0.2,
-      },
-    ],
-  };
-}
+  charts.value.forEach(({ key }) => {
+    const newReading = Math.floor(Math.random() * 1024);
+
+    // Update the `data` array
+    const dataset = chartDataMap.value[key].datasets[0];
+    dataset.data = [...dataset.data, newReading];
+    if (dataset.data.length > dataSize) {
+      dataset.data.shift();
+    }
+
+    // Reasing chartDataMap so that Vue recognizes the update
+    chartDataMap.value[key] = {
+      ...chartDataMap.value[key],
+      labels: [...labels.value],
+      datasets: [{ ...dataset }],
+    };
+  });
+};
 
 export const accelerationData: ChartData<'line'> = {
   labels: ['0s', '1s', '2s', '3s', '4s', '5s', '6s'],
