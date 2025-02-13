@@ -1,7 +1,7 @@
 <template>
   <div class="chart-container">
     <div v-for="index in 4" :class="`chart${index}`">
-      <LineChart :chartData="data" :chartOptions="options" />
+      <LineChart :chartData="chartConfig.chartData.value" :chartOptions="chartConfig.chartOptions.value" />
     </div>
 
     <div class="chart5">
@@ -16,18 +16,12 @@
 <script setup lang="ts">
 import LineChart from "@/components/LineChart.vue";
 import * as chartConfig from "@/chartConfig";
-import { ref, onMounted } from "vue";
-import type { ChartData } from "chart.js";
-
-const options = chartConfig.options;
-const data = ref<ChartData<"line">>({
-  datasets: [],
-});
+import { onMounted } from "vue";
 
 onMounted(() => {
   setInterval(() => {
-    data.value = chartConfig.randomData();
-  }, 3000);
+    chartConfig.updateSensorData();
+  }, 1000);
 });
 </script>
 

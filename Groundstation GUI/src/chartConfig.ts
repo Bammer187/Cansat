@@ -1,34 +1,79 @@
 import type { ChartData, ChartOptions } from "chart.js";
+import { ref } from "vue";
 
-function getRandomInt() {
-  return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
-}
+const dataSize = 10;
+const readings = ref<number[]>(new Array(dataSize).fill(0));
+const labels = ref<string[]>(new Array(dataSize).fill("0"));
 
-export const randomData = (): ChartData<"line"> => ({
-  labels: ["January", "February", "March", "April", "May", "June", "July"],
+export const chartData = ref<ChartData<'line'>>({
+  labels: labels.value,
   datasets: [
     {
-      label: "Testing Data",
+      label: "Testdata",
+      data: readings.value,
       backgroundColor: "#f87979",
       borderColor: "#f87979",
-      pointBackgroundColor: "#f87979",
-      data: [
-        getRandomInt(),
-        getRandomInt(),
-        getRandomInt(),
-        getRandomInt(),
-        getRandomInt(),
-        getRandomInt(),
-        getRandomInt(),
-      ],
+      borderWidth: 1.2,
+      pointBorderColor: "#f87979",
+      pointRadius: 0.2,
     },
   ],
 });
 
-export const options: ChartOptions<"line"> = {
+export const chartOptions = ref<ChartOptions<'line'>>({
   responsive: true,
   maintainAspectRatio: false,
-};
+  scales: {
+    y: {
+      title: {
+        display: true,
+        text: "Test",
+      },
+      grid: { display: true },
+      min: 0,
+      max: 1040,
+    },
+    x: {
+      title: {
+        display: true,
+        text: "Time (s)",
+      },
+      grid: { display: true },
+      min: 0,
+    },
+  },
+});
+
+let currentTime = 0.0;
+
+export const updateSensorData = () => {
+  currentTime++;
+  const label = `${currentTime}`
+  const newReading = Math.floor(Math.random() * 1024);
+
+  readings.value = [...readings.value, newReading];
+  labels.value = [...labels.value, label];
+
+  if (readings.value.length > dataSize) {
+    readings.value.shift();
+    labels.value.shift();
+  }
+
+  chartData.value = {
+    labels: labels.value,
+    datasets: [
+      {
+        label: "Testdata",
+        data: readings.value,
+        backgroundColor: "#f87979",
+        borderColor: "#f87979",
+        borderWidth: 1.2,
+        pointBorderColor: "#f87979",
+        pointRadius: 0.2,
+      },
+    ],
+  };
+}
 
 export const accelerationData: ChartData<'line'> = {
   labels: ['0s', '1s', '2s', '3s', '4s', '5s', '6s'],
