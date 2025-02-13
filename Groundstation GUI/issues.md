@@ -9,4 +9,4 @@
 1. `(X) ISSUE-007: Include LineChart.vue in App.vue with testing data`
 1. `(X) ISSUE-008: update charts with reactive testing data`
 1. `(X) ISSUE-009: include four charts`
-1. `() ISSUE-010: Graph for X/Y/Z acclereration`
+1. `(X) ISSUE-010: Graph for X/Y/Z acclereration`
