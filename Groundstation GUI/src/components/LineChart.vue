@@ -15,7 +15,6 @@ import {
 } from "chart.js";
 import { Line } from "vue-chartjs";
 import type { ChartData, ChartOptions } from "chart.js";
-import { ref } from "vue";
 
 defineProps<{
   chartData: ChartData<'line'>;
