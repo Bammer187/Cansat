@@ -1,4 +1,4 @@
-import type { ChartData, ChartOptions } from "chart.js";
+import type { ChartData, ChartDataset, ChartOptions } from "chart.js";
 import { ref } from "vue";
 
 const dataSize = 10;
@@ -29,124 +29,22 @@ export const charts = ref([
     color: "orange",
     yLabel: "µg/m³",
   },
+  {
+    title: "Acceleration",
+    key: "acceleration",
+    color: "black",
+    yLabel: "m/s²",
+  },
 ]);
 
-export const chartDataMap = ref<Record<string, ChartData<"line">>>(
-  Object.fromEntries(
-    charts.value.map(({ key, color }) => [
-      key,
-      {
-        labels: labels.value,
-        datasets: [
-          {
-            label: key,
-            data: new Array(dataSize).fill(0),
-            backgroundColor: color,
-            borderColor: color,
-            borderWidth: 1.2,
-            pointBorderColor: color,
-            pointRadius: 0.2,
-          },
-        ],
-      },
-    ])
-  )
-);
-
-export const chartOptionsMap = ref<Record<string, ChartOptions<"line">>>(
-  Object.fromEntries(
-    charts.value.map(({ key, yLabel }) => [
-      key,
-      {
-        responsive: true,
-        maintainAspectRatio: false,
-        scales: {
-          y: {
-            title: {
-              display: true,
-              text: yLabel || "",
-            },
-            grid: { display: true },
-          },
-          x: {
-            title: {
-              display: true,
-              text: "Time (s)",
-            },
-            grid: { display: true },
-          },
-        },
-      },
-    ])
-  )
-);
-
-
-let currentTime = 0;
-
-export const updateSensorData = () => {
-  currentTime++;
-  const label = `${currentTime.toFixed(1)}`;
-
-  labels.value = [...labels.value, label];
-  if (labels.value.length > dataSize) {
-    labels.value.shift();
-  }
-
-  charts.value.forEach(({ key }) => {
-    const newReading = Math.floor(Math.random() * 1024);
-
-    // Update the `data` array
-    const dataset = chartDataMap.value[key].datasets[0];
-    dataset.data = [...dataset.data, newReading];
-    if (dataset.data.length > dataSize) {
-      dataset.data.shift();
-    }
-
-    // Reasing chartDataMap so that Vue recognizes the update
-    chartDataMap.value[key] = {
-      ...chartDataMap.value[key],
-      labels: [...labels.value],
-      datasets: [{ ...dataset }],
-    };
-  });
-};
-
-export const accelerationData: ChartData<"line"> = {
-  labels: ["0s", "1s", "2s", "3s", "4s", "5s", "6s"],
-  datasets: [
-    {
-      label: "X-Beschleunigung",
-      data: [1.2, 2.3, 0.8, 1.1, 2.5, 1.8, 1.2],
-      borderColor: "red",
-      backgroundColor: "red",
-      yAxisID: "y",
-    },
-    {
-      label: "Y-Beschleunigung",
-      data: [0.5, 1.7, 2.1, 1.9, 1.3, 2.4, 1.9],
-      borderColor: "blue",
-      backgroundColor: "blue",
-      yAxisID: "y1",
-    },
-    {
-      label: "Z-Beschleunigung",
-      data: [0.2, 1.1, 1.5, 1.2, 1.8, 1.4, 1.6],
-      borderColor: "green",
-      backgroundColor: "green",
-      yAxisID: "y2",
-    },
-  ],
-};
-
-export const accelerationOptions: ChartOptions<"line"> = {
+const accelerationOptions: ChartOptions<"line"> = {
   responsive: true,
   maintainAspectRatio: false,
   scales: {
     x: {
       title: {
         display: true,
-        text: "Zeit (s)",
+        text: "Time (s)",
       },
     },
     y: {
@@ -186,4 +84,142 @@ export const accelerationOptions: ChartOptions<"line"> = {
       },
     },
   },
+};
+
+export const chartDataMap = ref<Record<string, ChartData<"line">>>({
+  ...Object.fromEntries(
+    charts.value
+      .filter(({ key }) => key !== "acceleration")
+      .map(({ key, color }) => [
+        key,
+        {
+          labels: labels.value,
+          datasets: [
+            {
+              label: key,
+              data: new Array(dataSize).fill(0),
+              backgroundColor: color,
+              borderColor: color,
+              borderWidth: 1.2,
+              pointBorderColor: color,
+              pointRadius: 0.2,
+            },
+          ],
+        },
+      ])
+  ),
+  acceleration: {
+    labels: labels.value,
+    datasets: [
+      {
+        label: "X-Accleration",
+        data: new Array(dataSize).fill(0),
+        borderColor: "red",
+        backgroundColor: "red",
+        yAxisID: "y",
+      },
+      {
+        label: "Y-Accleration",
+        data: new Array(dataSize).fill(0),
+        borderColor: "blue",
+        backgroundColor: "blue",
+        yAxisID: "y1",
+      },
+      {
+        label: "Z-Accleration",
+        data: new Array(dataSize).fill(0),
+        borderColor: "green",
+        backgroundColor: "green",
+        yAxisID: "y2",
+      },
+    ],
+  },
+});
+
+export const chartOptionsMap = ref<Record<string, ChartOptions<"line">>>({
+  ...Object.fromEntries(
+    charts.value
+      .filter(({ key }) => key !== "acceleration")
+      .map(({ key, yLabel }) => [
+        key,
+        {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              title: {
+                display: true,
+                text: yLabel || "",
+              },
+              grid: { display: true },
+            },
+            x: {
+              title: {
+                display: true,
+                text: "Time (s)",
+              },
+              grid: { display: true },
+            },
+          },
+        },
+      ])
+  ),
+  acceleration: accelerationOptions,
+});
+
+let currentTime = 0;
+
+export const updateSensorData = () => {
+  currentTime++;
+  const label: string = `${currentTime.toFixed(1)}`;
+
+  labels.value = [...labels.value, label];
+  if (labels.value.length > dataSize) {
+    labels.value.shift();
+  }
+
+  charts.value.forEach(({ key }) => {
+    if (key === "acceleration") {
+      // random values for x, y, z acceleration
+      const newReadingX: number = Math.random() * 3 - 1.5;
+      const newReadingY: number = Math.random() * 3 - 1.5;
+      const newReadingZ: number = Math.random() * 3 - 1.5;
+
+      const datasets: ChartDataset<'line'>[] = chartDataMap.value["acceleration"].datasets;
+
+      // x data update
+      datasets[0].data = [...datasets[0].data, newReadingX];
+      if (datasets[0].data.length > dataSize) datasets[0].data.shift();
+
+      // y data update
+      datasets[1].data = [...datasets[1].data, newReadingY];
+      if (datasets[1].data.length > dataSize) datasets[1].data.shift();
+
+      // z data update
+      datasets[2].data = [...datasets[2].data, newReadingZ];
+      if (datasets[2].data.length > dataSize) datasets[2].data.shift();
+
+      // Reasing chartDataMap so that Vue recognizes the update
+      chartDataMap.value["acceleration"] = {
+        ...chartDataMap.value["acceleration"],
+        labels: [...labels.value],
+        datasets: [...datasets],
+      };
+    } else {
+      const newReading: number = Math.floor(Math.random() * 1024);
+      // Update the `data` array
+      const dataset: ChartDataset<'line'> = chartDataMap.value[key].datasets[0];
+
+      dataset.data = [...dataset.data, newReading];
+      if (dataset.data.length > dataSize) {
+        dataset.data.shift();
+      }
+
+      chartDataMap.value[key] = {
+        ...chartDataMap.value[key],
+        labels: [...labels.value],
+        datasets: [{ ...dataset }],
+      };
+    }
+  });
 };

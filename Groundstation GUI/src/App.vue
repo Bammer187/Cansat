@@ -6,13 +6,6 @@
         :chartOptions="chartConfig.chartOptionsMap.value[chart.key]"
       />
     </div>
-
-    <div class="chart5">
-      <LineChart
-        :chartData="chartConfig.accelerationData"
-        :chartOptions="chartConfig.accelerationOptions"
-      />
-    </div>
   </div>
 </template>
 
