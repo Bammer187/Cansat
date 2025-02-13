@@ -1,18 +1,6 @@
 <template>
   <div class="chart-container">
-    <div class="chart1">
-      <LineChart :chartData="data" :chartOptions="options" />
-    </div>
-
-    <div class="chart2">
-      <LineChart :chartData="data" :chartOptions="options" />
-    </div>
-
-    <div class="chart3">
-      <LineChart :chartData="data" :chartOptions="options" />
-    </div>
-
-    <div class="chart4">
+    <div v-for="index in 4" :class="`chart${index}`">
       <LineChart :chartData="data" :chartOptions="options" />
     </div>
 

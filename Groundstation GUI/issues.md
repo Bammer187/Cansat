@@ -10,3 +10,4 @@
 1. `(X) ISSUE-008: update charts with reactive testing data`
 1. `(X) ISSUE-009: include four charts`
 1. `(X) ISSUE-010: Graph for X/Y/Z acclereration`
+1. `(X) ISSUE-011: create charts with for loop`
