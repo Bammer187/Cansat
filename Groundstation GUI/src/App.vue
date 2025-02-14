@@ -23,13 +23,14 @@
 import LineChart from "@/components/LineChart.vue";
 import * as chartConfig from "@/chartConfig";
 import { onMounted, ref } from "vue";
+import { UPDATE_TIME } from "@/settings";
 
 const update = ref<boolean>(true);
 
 onMounted(() => {
   setInterval(() => {
     chartConfig.updateSensorData(update.value);
-  }, 1000);
+  }, UPDATE_TIME);
 });
 </script>
 

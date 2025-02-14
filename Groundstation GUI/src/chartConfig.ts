@@ -1,38 +1,38 @@
 import type { ChartData, ChartDataset, ChartOptions } from "chart.js";
 import { ref } from "vue";
+import * as settings from "@/settings";
 
-const dataSize = 10;
+const dataSize: number = settings.NUMBER_POINTS;
 const labels = ref<string[]>(new Array(dataSize).fill("0"));
 
 export const charts = ref([
   {
     title: "Temperature",
     key: "Temperature",
-    color: "red",
+    color: settings.TEMP_COLOR,
     yLabel: "°C",
   },
   {
     title: "Humidity",
     key: "Humidity",
-    color: "blue",
+    color: settings.HUMI_COLOR,
     yLabel: "%",
   },
   {
     title: "Air pressure",
     key: "Air pressure",
-    color: "green",
+    color: settings.AIRP_COLOR,
     yLabel: "hPa",
   },
   {
     title: "Particle concentration",
     key: "Particle concentration",
-    color: "orange",
+    color: settings.PART_COLOR,
     yLabel: "µg/m³",
   },
   {
     title: "Acceleration",
     key: "acceleration",
-    color: "black",
     yLabel: "m/s²",
   },
 ]);
@@ -100,9 +100,9 @@ export const chartDataMap = ref<Record<string, ChartData<"line">>>({
               data: new Array(dataSize).fill(0),
               backgroundColor: color,
               borderColor: color,
-              borderWidth: 1.2,
+              borderWidth: settings.LINE_THICKNESS,
               pointBorderColor: color,
-              pointRadius: 0.2,
+              pointRadius: settings.POINT_SIZE / 2,
             },
           ],
         },
@@ -114,23 +114,29 @@ export const chartDataMap = ref<Record<string, ChartData<"line">>>({
       {
         label: "X-Accleration",
         data: new Array(dataSize).fill(0),
-        borderColor: "red",
-        backgroundColor: "red",
+        borderColor: settings.ACCX_COLOR,
+        backgroundColor: settings.ACCX_COLOR,
         yAxisID: "y",
+        pointRadius: settings.POINT_SIZE / 2,
+        borderWidth: settings.LINE_THICKNESS,
       },
       {
         label: "Y-Accleration",
         data: new Array(dataSize).fill(0),
-        borderColor: "blue",
-        backgroundColor: "blue",
+        borderColor: settings.ACCY_COLOR,
+        backgroundColor: settings.ACCY_COLOR,
         yAxisID: "y1",
+        pointRadius: settings.POINT_SIZE / 2,
+        borderWidth: settings.LINE_THICKNESS,
       },
       {
         label: "Z-Accleration",
         data: new Array(dataSize).fill(0),
-        borderColor: "green",
-        backgroundColor: "green",
+        borderColor: settings.ACCZ_COLOR,
+        backgroundColor: settings.ACCZ_COLOR,
         yAxisID: "y2",
+        pointRadius: settings.POINT_SIZE / 2,
+        borderWidth: settings.LINE_THICKNESS,
       },
     ],
   },
@@ -170,7 +176,7 @@ export const chartOptionsMap = ref<Record<string, ChartOptions<"line">>>({
 let currentTime = 0;
 
 export const updateSensorData = (update: boolean) => {
-  currentTime++;
+  currentTime = currentTime + settings.UPDATE_TIME / 1000;
   const label: string = `${currentTime.toFixed(1)}`;
 
   labels.value = [...labels.value, label];
