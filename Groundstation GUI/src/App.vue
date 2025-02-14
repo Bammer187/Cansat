@@ -1,11 +1,19 @@
 <template>
-  <div class="chart-container">
-    <div v-for="(chart, index) in chartConfig.charts.value" :key="chart.key" :class="`chart${index + 1}`">
+  <div class="grid-container">
+    <div
+      v-for="(chart, index) in chartConfig.charts.value"
+      :key="chart.key"
+      :class="`chart${index + 1}`"
+    >
       <LineChart
         :chartData="chartConfig.chartDataMap.value[chart.key]"
         :chartOptions="chartConfig.chartOptionsMap.value[chart.key]"
       />
     </div>
+
+    <div class="div6"></div>
+    <div class="div7"></div>
+    <div class="div8"></div>
   </div>
 </template>
 
@@ -22,14 +30,14 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.chart-container {
+.grid-container {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  grid-template-rows: repeat(3, 1fr);
   gap: 20px;
-  width: 98%;
-  height: 60%;
-  margin: 20px;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
   position: absolute;
   top: 0;
   left: 0;
@@ -49,5 +57,17 @@ onMounted(() => {
 }
 .chart5 {
   grid-area: 1 / 3 / 3 / 4;
+}
+.div6 {
+  grid-area: 3 / 1 / 4 / 2;
+  background-color: red;
+}
+.div7 {
+  grid-area: 3 / 2 / 4 / 3;
+  background-color: yellow;
+}
+.div8 {
+  grid-area: 3 / 3 / 4 / 4;
+  background-color: blue;
 }
 </style>
