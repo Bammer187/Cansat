@@ -14,7 +14,7 @@
 1. `(X) ISSUE-012: Make chart x-axis time based`
 1. `(X) ISSUE-013: Make acceleration chart x-axis time based`
 1. `(X) ISSUE-014: different data selectable for temp, humi, air, part`
-1. `() ISSUE-015: button to temporarily pause chart updates`
+1. `(X) ISSUE-015: button to temporarily pause chart updates`
 1. `(X) ISSUE-016: each chart should have its own y label`
 1. `(X) ISSUE-017: Add accleration chart to chart map and creation for loop`
 1. `() ISSUE-018: settings file for things like points in graph, update time`

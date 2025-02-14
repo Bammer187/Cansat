@@ -13,18 +13,22 @@
 
     <div class="div6"></div>
     <div class="div7"></div>
-    <div class="div8"></div>
+    <div class="div8">
+      <button @click="update = !update">Pause</button>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import LineChart from "@/components/LineChart.vue";
 import * as chartConfig from "@/chartConfig";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
+
+const update = ref<boolean>(true);
 
 onMounted(() => {
   setInterval(() => {
-    chartConfig.updateSensorData();
+    chartConfig.updateSensorData(update.value);
   }, 1000);
 });
 </script>

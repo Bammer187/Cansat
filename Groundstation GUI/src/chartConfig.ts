@@ -169,7 +169,7 @@ export const chartOptionsMap = ref<Record<string, ChartOptions<"line">>>({
 
 let currentTime = 0;
 
-export const updateSensorData = () => {
+export const updateSensorData = (update: boolean) => {
   currentTime++;
   const label: string = `${currentTime.toFixed(1)}`;
 
@@ -200,11 +200,13 @@ export const updateSensorData = () => {
       if (datasets[2].data.length > dataSize) datasets[2].data.shift();
 
       // Reasing chartDataMap so that Vue recognizes the update
-      chartDataMap.value["acceleration"] = {
-        ...chartDataMap.value["acceleration"],
-        labels: [...labels.value],
-        datasets: [...datasets],
-      };
+      if(update){
+        chartDataMap.value["acceleration"] = {
+          ...chartDataMap.value["acceleration"],
+          labels: [...labels.value],
+          datasets: [...datasets],
+        };
+      }
     } else {
       const newReading: number = Math.floor(Math.random() * 1024);
       // Update the `data` array
@@ -214,12 +216,13 @@ export const updateSensorData = () => {
       if (dataset.data.length > dataSize) {
         dataset.data.shift();
       }
-
-      chartDataMap.value[key] = {
-        ...chartDataMap.value[key],
-        labels: [...labels.value],
-        datasets: [{ ...dataset }],
-      };
+      if(update){
+        chartDataMap.value[key] = {
+          ...chartDataMap.value[key],
+          labels: [...labels.value],
+          datasets: [{ ...dataset }],
+        };
+      }
     }
   });
 };
