@@ -1,9 +1,11 @@
 import type { ChartData, ChartDataset, ChartOptions } from "chart.js";
 import { ref } from "vue";
 import * as settings from "@/settings";
+import axios from "axios";
 
 const dataSize: number = settings.NUMBER_POINTS;
 const labels = ref<string[]>(new Array(dataSize).fill("0"));
+const data = ref({});
 
 export const charts = ref([
   {
@@ -53,7 +55,7 @@ const accelerationOptions: ChartOptions<"line"> = {
       position: "right",
       title: {
         display: true,
-        text: "X",
+        text: "X - m/s²",
       },
       grid: {
         drawOnChartArea: false,
@@ -65,7 +67,7 @@ const accelerationOptions: ChartOptions<"line"> = {
       position: "right",
       title: {
         display: true,
-        text: "Y",
+        text: "Y - m/s²",
       },
       grid: {
         drawOnChartArea: false,
@@ -77,7 +79,7 @@ const accelerationOptions: ChartOptions<"line"> = {
       position: "right",
       title: {
         display: true,
-        text: "Z",
+        text: "Z - m/s²",
       },
       grid: {
         drawOnChartArea: false,
@@ -206,7 +208,7 @@ export const updateSensorData = (update: boolean) => {
       if (datasets[2].data.length > dataSize) datasets[2].data.shift();
 
       // Reasing chartDataMap so that Vue recognizes the update
-      if(update){
+      if (update) {
         chartDataMap.value["acceleration"] = {
           ...chartDataMap.value["acceleration"],
           labels: [...labels.value],
@@ -222,7 +224,7 @@ export const updateSensorData = (update: boolean) => {
       if (dataset.data.length > dataSize) {
         dataset.data.shift();
       }
-      if(update){
+      if (update) {
         chartDataMap.value[key] = {
           ...chartDataMap.value[key],
           labels: [...labels.value],
@@ -231,4 +233,16 @@ export const updateSensorData = (update: boolean) => {
       }
     }
   });
+};
+
+const fetchData = () => {
+  axios.get('http://127.0.0.1:5000/data')
+  .then(response => {
+    data.value = response.data
+    console.log(response.data);
+  })
+  .catch(error => {
+    console.log("Error loading the data: ", error);
+  });
+  return data.value;
 };
