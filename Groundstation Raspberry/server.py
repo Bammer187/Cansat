@@ -28,6 +28,8 @@ class Server:
             return jsonify(data)
 
         @self.app.route('/')
+        def serve(path="index.html"):
+            return send_from_directory("dist", path)
         @self.app.route('/<path:path>')
         def serve_vue(path="index.html"):
             return send_from_directory("dist", path)

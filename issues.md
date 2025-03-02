@@ -19,3 +19,4 @@
 1. `(X) ISSUE-017: Add accleration chart to chart map and creation for loop`
 1. `(X) ISSUE-018: settings file for things like points in graph, update time`
 1. `(X) ISSUE-019: rewrite server.py into class that can be accesed in main.py`
+1. `(X) ISSUE-020: Return index.html if the input path is '/' in server.py`
