@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, send_from_directory
 from flask_cors import CORS
-from random import randint
 
 class Server:
     def __init__(self, host='0.0.0.0', port=5000, debug=True):
@@ -9,23 +8,22 @@ class Server:
         self.host = host
         self.port = port
         self.debug = debug
-        self._setup_routes()
+        self.__setup_routes()
+        self.__data = {
+            "temperature": 0,
+            "pressure": 0,
+            "humidity": 0,
+            "particle": 0,
+            "acceleration": {
+                "X": 0,
+                "Y": 0,
+                "Z": 0,
+            }}
 
-    def _setup_routes(self):
+    def __setup_routes(self):
         @self.app.route('/data')
         def send_data():
-            data = {
-                "temperature": randint(1, 1024),
-                "pressure": randint(1, 1024),
-                "humidity": randint(1, 1024),
-                "particle": randint(1, 1024),
-                "acceleration": {
-                    "X": randint(1, 50),
-                    "Y": randint(1, 50),
-                    "Z": randint(1, 50),
-                }
-            }
-            return jsonify(data)
+            return jsonify(self.__data)
 
         @self.app.route('/')
         def serve(path="index.html"):

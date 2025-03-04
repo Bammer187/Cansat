@@ -20,3 +20,4 @@
 1. `(X) ISSUE-018: settings file for things like points in graph, update time`
 1. `(X) ISSUE-019: rewrite server.py into class that can be accesed in main.py`
 1. `(X) ISSUE-020: Return index.html if the input path is '/' in server.py`
+1. `() ISSUE-021: POST METHOD to send data from sensors`
