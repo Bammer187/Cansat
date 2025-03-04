@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, send_from_directory
+from flask import Flask, jsonify, send_from_directory, request
 from flask_cors import CORS
 
 class Server:
@@ -21,9 +21,22 @@ class Server:
             }}
 
     def __setup_routes(self):
-        @self.app.route('/data')
-        def send_data():
+        @self.app.route('/data', methods=['GET'])
+        def get_data():
             return jsonify(self.__data)
+        
+        @self.app.route('/send_data', methods=['POST'])
+        def update_data():
+            try:
+                new_data = request.get_json()
+                if isinstance(new_data, dict):
+                    self.__data.update(new_data)
+                    return jsonify({"success": True, "message": "Data updated!"}), 200
+                else:
+                    return jsonify({"success": False, "message": "Invalid data format"}), 400
+
+            except Exception as e:
+                return jsonify({"success": False, "message": str(e)}), 500
 
         @self.app.route('/')
         def serve(path="index.html"):
