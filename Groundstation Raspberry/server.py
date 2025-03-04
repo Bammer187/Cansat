@@ -25,7 +25,7 @@ class Server:
         def get_data():
             return jsonify(self.__data)
         
-        @self.app.route('/send_data', methods=['POST'])
+        @self.app.route('/send_data', methods=['GET', 'POST'])
         def update_data():
             try:
                 new_data = request.get_json()

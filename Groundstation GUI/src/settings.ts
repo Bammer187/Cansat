@@ -1,4 +1,4 @@
-export const UPDATE_TIME: number = 100; // in milliseconds
+export const UPDATE_TIME: number = 1000; // in milliseconds
 export const NUMBER_POINTS: number = 10
 export const POINT_SIZE: number = 2.4; // in px
 export const LINE_THICKNESS: number = 1.2; // in px
