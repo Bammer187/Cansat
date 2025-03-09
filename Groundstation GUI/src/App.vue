@@ -24,12 +24,26 @@ import LineChart from "@/components/LineChart.vue";
 import * as chartConfig from "@/chartConfig";
 import { onMounted, ref } from "vue";
 import { UPDATE_TIME } from "@/settings";
+import axios from "axios";
 
 const update = ref<boolean>(true);
+const data_saved = ref<boolean>(false);
+
+const checkDataSaved = () => {
+  axios.get('http://127.0.0.1:5000/check_data_saved')
+  .then(response => {
+    data_saved.value = response.data
+  })
+  .catch(error => {
+    console.log("Error loading the data: ", error);
+  });
+  return data_saved.value;
+};
 
 onMounted(() => {
   setInterval(() => {
     chartConfig.updateSensorData(update.value);
+    checkDataSaved();
   }, UPDATE_TIME);
 });
 </script>

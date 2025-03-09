@@ -19,11 +19,17 @@ class Server:
                 "Y": 0,
                 "Z": 0,
             }}
+        self.__data_saved ={"success": False}
+
 
     def __setup_routes(self):
         @self.app.route('/data', methods=['GET'])
         def get_data():
             return jsonify(self.__data)
+        
+        @self.app.route('/check_data_saved', methods=['GET'])
+        def get_data_saved():
+            return jsonify(self.__data_saved)
         
         @self.app.route('/send_data', methods=['GET', 'POST'])
         def update_data():
@@ -31,6 +37,7 @@ class Server:
                 new_data = request.get_json()
                 if isinstance(new_data, dict):
                     self.__data.update(new_data)
+                    self.__data_saved["success"] = new_data["success"]
                     return jsonify({"success": True, "message": "Data updated!"}), 200
                 else:
                     return jsonify({"success": False, "message": "Invalid data format"}), 400

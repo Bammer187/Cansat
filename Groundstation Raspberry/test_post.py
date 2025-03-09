@@ -61,7 +61,7 @@ while True:
             "Y": y_acceleration,
             "Z": z_acceleration
         },
-        "succes": success
+        "success": success
     }
 
     try:
