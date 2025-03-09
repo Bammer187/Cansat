@@ -1,0 +1,11 @@
+export const UPDATE_TIME: number = 1000; // in milliseconds
+export const NUMBER_POINTS: number = 10
+export const POINT_SIZE: number = 2.4; // in px
+export const LINE_THICKNESS: number = 1.2; // in px
+export const TEMP_COLOR: string = "red"; // Supported types: Hexadecimal, RGB, RGBA, HSL, HSLA, named colors
+export const HUMI_COLOR: string = "blue";
+export const AIRP_COLOR: string = "green";
+export const PART_COLOR: string = "orange";
+export const ACCX_COLOR: string = "red";
+export const ACCY_COLOR: string = "blue";
+export const ACCZ_COLOR: string = "green";
