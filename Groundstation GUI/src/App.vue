@@ -15,6 +15,9 @@
     <div class="div7"></div>
     <div class="div8">
       <button @click="update = !update">Pause</button>
+      <div :class="badgeClass" class="badge px-3 py-1 rounded-lg text-white font-semibold">
+        {{ statusText }}
+      </div>
     </div>
   </div>
 </template>
@@ -22,12 +25,15 @@
 <script setup lang="ts">
 import LineChart from "@/components/LineChart.vue";
 import * as chartConfig from "@/chartConfig";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { UPDATE_TIME } from "@/settings";
 import axios from "axios";
 
 const update = ref<boolean>(true);
 const data_saved = ref<boolean>(false);
+
+const badgeClass = computed(() => data_saved.value ? 'bg-green-500' : 'bg-red-500');
+const statusText = computed(() => data_saved.value ? 'OK' : 'ERROR');
 
 const checkDataSaved = () => {
   axios.get('http://127.0.0.1:5000/check_data_saved')
@@ -88,5 +94,20 @@ onMounted(() => {
 .div8 {
   grid-area: 3 / 3 / 4 / 4;
   background-color: blue;
+}
+
+.badge {
+  background-color: inherit;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.bg-green-500 {
+  background-color: #10b981 !important;
+}
+
+.bg-red-500 {
+  background-color: #ef4444 !important;
 }
 </style>
