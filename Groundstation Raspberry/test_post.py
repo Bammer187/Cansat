@@ -57,5 +57,10 @@ while True:
         }
     }
 
-    response = requests.post(url, json=data)
+    try:
+        response = requests.post(url, json=data)
+        print(f"Transmitted: {data} | Status: {response.status_code}")
+    except requests.exceptions.RequestException as e:
+        print(f"Error sending the data: {e}")
+
     sleep(1)
