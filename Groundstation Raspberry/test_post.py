@@ -34,16 +34,22 @@ while True:
     z_acceleration = randint(1, 50)
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-    insert_query = '''INSERT INTO sensorValues 
-        (Temperature, Airpressure, Humidity, Particle_concentration, 
-        X_Acceleration, Y_Acceleration, Z_Acceleration, Time)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
-    
-    cursor.execute(insert_query, (temperature, airpressure, humidity, 
-                                  particle_concentration, x_acceleration, 
-                                  y_acceleration, z_acceleration, current_time))
-    
-    connection.commit()
+    success = False
+    try:
+        insert_query = '''INSERT INTO sensorValues 
+            (Temperature, Airpressure, Humidity, Particle_concentration, 
+            X_Acceleration, Y_Acceleration, Z_Acceleration, Time)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
+        
+        cursor.execute(insert_query, (temperature, airpressure, humidity, 
+                                    particle_concentration, x_acceleration, 
+                                    y_acceleration, z_acceleration, current_time))
+        
+        connection.commit()
+        success = True
+    except sqlite3.Error as e:
+        print(f"Error saving the data: {e}")
+        success = False
 
     data = {
         "temperature": temperature,
@@ -54,7 +60,8 @@ while True:
             "X": x_acceleration,
             "Y": y_acceleration,
             "Z": z_acceleration
-        }
+        },
+        "succes": success
     }
 
     try:

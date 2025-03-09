@@ -28,5 +28,6 @@
 1. `() ISSUE-102: display on GUI if data is being saved or if there is an error`
 1. `() ISSUE-103: Button on GUI to delete data from database`
 1. `(X) ISSUE-104: save data on each cycle`
+1. `() ISSUE-105: Rewrite test_post.py so that it can started via main.py`
 
 ## SENSOR/COMMUNICATION ISSUES
