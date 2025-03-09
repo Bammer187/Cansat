@@ -2,7 +2,7 @@ import requests
 from random import randint
 from time import sleep
 import sqlite3
-import datetime
+from datetime import datetime
 
 connection = sqlite3.connect('sensor_data.db')
 cursor = connection.cursor()
@@ -33,6 +33,17 @@ while True:
     y_acceleration = randint(1, 50)
     z_acceleration = randint(1, 50)
     current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+    insert_query = '''INSERT INTO sensorValues 
+        (Temperature, Airpressure, Humidity, Particle_concentration, 
+        X_Acceleration, Y_Acceleration, Z_Acceleration, Time)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
+    
+    cursor.execute(insert_query, (temperature, airpressure, humidity, 
+                                  particle_concentration, x_acceleration, 
+                                  y_acceleration, z_acceleration, current_time))
+    
+    connection.commit()
 
     data = {
         "temperature": temperature,
