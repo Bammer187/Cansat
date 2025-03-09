@@ -1,5 +1,6 @@
 # ISSUES
 
+## GUI ISSUES
 1. `(X) ISSUE-001: Graphs for temperature, humidity, air pressure, particle-conecntration `
 1. `() ISSUE-002: Display for battery status`
 1. `(X) ISSUE-003: socket.io/axios integration`
@@ -21,3 +22,10 @@
 1. `(X) ISSUE-019: rewrite server.py into class that can be accesed in main.py`
 1. `(X) ISSUE-020: Return index.html if the input path is '/' in server.py`
 1. `(X) ISSUE-021: POST METHOD to send data from sensors`
+
+## DATABASE ISSUES
+1. `(X) ISSUE-101: create database to save sensor data`
+1. `() ISSUE-102: display on GUI if data is being saved or if there is an error`
+1. `() ISSUE-103: Button on GUI to delete data from database`
+
+## SENSOR/COMMUNICATION ISSUES
