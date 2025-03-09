@@ -27,5 +27,6 @@
 1. `(X) ISSUE-101: create database to save sensor data`
 1. `() ISSUE-102: display on GUI if data is being saved or if there is an error`
 1. `() ISSUE-103: Button on GUI to delete data from database`
+1. `() ISSUE-104: save data on each cycle`
 
 ## SENSOR/COMMUNICATION ISSUES
