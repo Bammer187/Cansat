@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, send_from_directory, request
 from flask_cors import CORS
 import time
+from data.data_factory import DataFactory
 
 class Server:
     def __init__(self, host='0.0.0.0', port=5000, debug=True):
@@ -24,6 +25,7 @@ class Server:
 
         self.__last_saved_time = 0
         self.__TIMEOUT = 3
+        self.__data_provider = DataFactory.getInstance()
 
 
     def __setup_routes(self):
@@ -31,6 +33,7 @@ class Server:
         def get_data():
             return jsonify(self.__data)
         
+
         @self.app.route('/check_data_saved', methods=['GET'])
         def get_data_saved():
             current_time = time.time()
@@ -39,6 +42,7 @@ class Server:
 
             return jsonify(self.__data["success"])
         
+
         @self.app.route('/send_data', methods=['GET', 'POST'])
         def update_data():
             try:
@@ -56,9 +60,31 @@ class Server:
             except Exception as e:
                 return jsonify({"success": False, "message": str(e)}), 500
 
+
+        @self.app.route('/delete_entry/<int:option>', methods=['DELETE'])
+        def delete_entry(option):
+            if option not in [1, 2, 3]:
+                return jsonify({'message': 'Invalid option'}), 400
+            
+            self.__data_provider.open_connection('sensor_data.db')
+            
+            if option == 1:
+                self.__data_provider.delete_entrys(10)
+            elif option == 2:
+                pass
+            elif option == 3:
+                pass
+
+            self.__data_provider.close_connection()
+
+            return jsonify({'message': f'Entry with option {option} deleted successfully'}), 200
+
+
         @self.app.route('/')
         def serve(path="index.html"):
             return send_from_directory("dist", path)
+        
+
         @self.app.route('/<path:path>')
         def serve_vue(path="index.html"):
             return send_from_directory("dist", path)

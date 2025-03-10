@@ -27,6 +27,7 @@ class SQLDataProvider(DataProvider):
         );'''
 
         self.cursor.execute(create_table)
+        self.connection.commit()
         self.close_connection()
         
 
@@ -48,6 +49,18 @@ class SQLDataProvider(DataProvider):
                                     data["particle"], data["acceleration"]["X"], 
                                     data["acceleration"]["Y"], data["acceleration"]["Z"]))
         
+        self.connection.commit()
+
+
+    def delete_entrys(self, number: int) -> None:
+        delete_query = '''DELETE FROM sensorValues
+            WHERE ROWID IN (
+                SELECT ROWID FROM sensorValues
+                ORDER BY Time ASC
+                LIMIT ?
+            );'''
+
+        self.cursor.execute(delete_query, [number])
         self.connection.commit()
 
 
