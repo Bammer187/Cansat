@@ -3,4 +3,6 @@ import sqlite3
 import requests
 
 class SQLDataProvider(DataProvider):
-    pass
+    
+    def __init__(self):
+        super().__init__()
