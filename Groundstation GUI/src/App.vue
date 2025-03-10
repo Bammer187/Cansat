@@ -18,11 +18,11 @@
       <div :class="badgeClass" class="badge px-3 py-1 rounded-lg text-white font-semibold">
         {{ statusText }}
       </div>
-      <button @click="deleteEntrys(1)">All</button>
-      <button @click="deleteEntrys(2)">10</button>
-      <button @click="deleteEntrys(3)">24h</button>
+      <button @click="deleteEntries(1)">All</button>
+      <button @click="deleteEntries(2)">10</button>
+      <button @click="deleteEntries(3)">24h</button>
       <input v-model="deleteCount" type="number" min="1" placeholder="Number of Entries" />
-      <button @click="deleteCustomEntries">Delete</button>
+      <button @click="deleteCustomEntries(deleteCount)">Delete</button>
     </div>
   </div>
 </template>
@@ -48,7 +48,7 @@ const statusText = computed(() => data_saved.value ? 'OK' : 'ERROR');
  * 2 - First 10 entrys
  * 3 - Last 24 hours
  */
-const deleteEntrys = (option: number) => {
+const deleteEntries = (option: number) => {
   axios.delete(`http://127.0.0.1:5000/delete_entry/${option}`)
     .then(response => {
       console.log(response.data.message);
@@ -58,13 +58,17 @@ const deleteEntrys = (option: number) => {
     });
 }
 
-const deleteCustomEntries = () => {
+/**
+ * 
+ * @param entries - How many entrys shall be deleted. The first number of entries specified are deleted.
+ */
+const deleteCustomEntries = (entries: number) => {
   if (deleteCount.value <= 0) {
     alert("Bitte eine gültige Anzahl eingeben!");
     return;
   }
 
-  axios.post('http://127.0.0.1:5000/delete_custom', { count: deleteCount.value })
+  axios.delete(`http://127.0.0.1:5000/delete_custom/${entries}`)
     .then(response => {
       console.log(response.data.message);
     })

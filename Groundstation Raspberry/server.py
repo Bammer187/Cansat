@@ -67,9 +67,9 @@ class Server:
                 return jsonify({'message': 'Invalid option'}), 400
             
             self.__data_provider.open_connection('sensor_data.db')
-            
+
             if option == 1:
-                self.__data_provider.delete_entrys(10)
+                self.__data_provider.delete_entries(10)
             elif option == 2:
                 pass
             elif option == 3:
@@ -78,6 +78,15 @@ class Server:
             self.__data_provider.close_connection()
 
             return jsonify({'message': f'Entry with option {option} deleted successfully'}), 200
+        
+
+        @self.app.route('/delete_custom/<int:entries>', methods=['DELETE'])
+        def delete_custom(entries):
+            self.__data_provider.open_connection('sensor_data.db')
+            self.__data_provider.delete_entries(entries)
+            self.__data_provider.close_connection()
+
+            return jsonify({'message': f'The first {entries} entries were succesfully deleted'}), 200
 
 
         @self.app.route('/')

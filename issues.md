@@ -38,6 +38,7 @@
 1. `(X) ISSUE-110: Rename files to snake case`
 1. `(X) ISSUE-111: SQL save_to_db() function`
 1. `(X) ISSUE-112: Rewrite test_post.py with DataProvider`
-1. `(X) ISSUE-113: SQL delete_entrys() function`
+1. `(X) ISSUE-113: SQL delete_entries() function`
+1. `(X) ISSUE-114: path to delete a number of entries specified by the user`
 
 ## SENSOR/COMMUNICATION ISSUES

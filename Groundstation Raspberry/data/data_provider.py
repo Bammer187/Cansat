@@ -9,7 +9,7 @@ class DataProvider:
     def save_to_db(self, data):
         raise Exception("Method not yet implemented")
     
-    def delete_entrys(self, number):
+    def delete_entries(self, number):
         raise Exception("Method not yet implemented")
 
     def open_connection(self, database):  

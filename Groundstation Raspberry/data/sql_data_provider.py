@@ -52,7 +52,7 @@ class SQLDataProvider(DataProvider):
         self.connection.commit()
 
 
-    def delete_entrys(self, number: int) -> None:
+    def delete_entries(self, number: int) -> None:
         delete_query = '''DELETE FROM sensorValues
             WHERE ROWID IN (
                 SELECT ROWID FROM sensorValues
