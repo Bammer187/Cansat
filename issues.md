@@ -35,5 +35,6 @@
 1. `() ISSUE-107: abstract class DataProvider`
 1. `(X) ISSUE-108: SQL initDB() function`
 1. `(X) ISSUE-109: SQL post_sensor_data() function`
+1. `() ISSUE-110: Rename files to snake case`
 
 ## SENSOR/COMMUNICATION ISSUES
