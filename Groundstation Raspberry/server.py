@@ -1,5 +1,6 @@
 from flask import Flask, jsonify, send_from_directory, request
 from flask_cors import CORS
+import time
 
 class Server:
     def __init__(self, host='0.0.0.0', port=5000, debug=True):
@@ -18,8 +19,11 @@ class Server:
                 "X": 0,
                 "Y": 0,
                 "Z": 0,
-            }}
-        self.__data_saved ={"success": False}
+            },
+            "success": False}
+
+        self.__last_saved_time = 0
+        self.__TIMEOUT = 3
 
 
     def __setup_routes(self):
@@ -29,7 +33,11 @@ class Server:
         
         @self.app.route('/check_data_saved', methods=['GET'])
         def get_data_saved():
-            return jsonify(self.__data_saved)
+            current_time = time.time()
+
+            self.__data["success"] = (current_time - self.__last_saved_time) < self.__TIMEOUT
+
+            return jsonify(self.__data["success"])
         
         @self.app.route('/send_data', methods=['GET', 'POST'])
         def update_data():
@@ -37,7 +45,10 @@ class Server:
                 new_data = request.get_json()
                 if isinstance(new_data, dict):
                     self.__data.update(new_data)
-                    self.__data_saved["success"] = new_data["success"]
+
+                    if new_data.get("success", False):
+                        self.__last_saved_time = time.time()
+
                     return jsonify({"success": True, "message": "Data updated!"}), 200
                 else:
                     return jsonify({"success": False, "message": "Invalid data format"}), 400
