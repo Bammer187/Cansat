@@ -32,5 +32,6 @@
 1. `(X) ISSUE-104: save data on each cycle`
 1. `() ISSUE-105: Rewrite test_post.py so that it can started via main.py`
 1. `() ISSUE-106: Create Singleton DataProvider`
+1. `() ISSUE-107: abstract class DataProvider`
 
 ## SENSOR/COMMUNICATION ISSUES

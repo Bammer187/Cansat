@@ -1,0 +1,2 @@
+class DataFactory:
+    pass
