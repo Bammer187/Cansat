@@ -1,4 +1,4 @@
-from DataProvider import DataProvider
+from .data_provider import DataProvider
 import sqlite3
 import requests
 
@@ -30,12 +30,25 @@ class SQLDataProvider(DataProvider):
         self.close_connection()
         
 
-    def post_sensor_data(self, server_url: str, data: dict):
+    def post_sensor_data(self, server_url: str, data: dict) -> None:
         try:
             response = requests.post(server_url, json=data)
             print(f"Transmitted: {data} | Status: {response.status_code}")
         except requests.exceptions.RequestException as e:
             print(f"Error sending the data: {e}")
+
+
+    def save_to_db(self, data: dict) -> None:
+        insert_query = '''INSERT INTO sensorValues 
+            (Temperature, Airpressure, Humidity, Particle_concentration, 
+            X_Acceleration, Y_Acceleration, Z_Acceleration)
+            VALUES (?, ?, ?, ?, ?, ?, ?);'''
+        
+        self.cursor.execute(insert_query, (data["temperature"], data["pressure"], data["humidity"], 
+                                    data["particle"], data["acceleration"]["X"], 
+                                    data["acceleration"]["Y"], data["acceleration"]["Z"]))
+        
+        self.connection.commit()
 
 
     def open_connection(self, db_name: str) -> None:

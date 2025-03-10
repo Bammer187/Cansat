@@ -1,20 +1,20 @@
-from SQLDataProvider import SQLDataProvider
+from .sql_data_provider import SQLDataProvider
 
 class DataFactory:
     instance = None
     create_data_provider_task = None
 
     @staticmethod
-    async def getInstance():
+    def getInstance():
         if DataFactory.instance:
             return DataFactory.instance
         
         if not DataFactory.create_data_provider_task:
             DataFactory.create_data_provider_task = DataFactory.getProvider()
 
-        DataFactory.instance = await DataFactory.create_data_provider_task
+        DataFactory.instance = DataFactory.create_data_provider_task
         return DataFactory.instance
 
     @staticmethod
-    async def getProvider() -> SQLDataProvider:
-        return SQLDataProvider("sensor_values.db")
+    def getProvider() -> SQLDataProvider:
+        return SQLDataProvider("sensor_data.db")
