@@ -31,5 +31,6 @@
 1. `() ISSUE-103: Button on GUI to delete data from database`
 1. `(X) ISSUE-104: save data on each cycle`
 1. `() ISSUE-105: Rewrite test_post.py so that it can started via main.py`
+1. `() ISSUE-106: Create Singleton DataProvider`
 
 ## SENSOR/COMMUNICATION ISSUES

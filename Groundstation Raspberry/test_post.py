@@ -16,8 +16,8 @@ create_table = '''CREATE TABLE IF NOT EXISTS sensorValues (
     X_Acceleration REAL,
     Y_Acceleration REAL,
     Z_Acceleration REAL,
-    Time TEXT
-)'''
+    Time TEXT DEFAULT (DATETIME('now', 'localtime'))
+);'''
 
 cursor.execute(create_table)
 connection.commit()
@@ -39,7 +39,7 @@ while True:
         insert_query = '''INSERT INTO sensorValues 
             (Temperature, Airpressure, Humidity, Particle_concentration, 
             X_Acceleration, Y_Acceleration, Z_Acceleration, Time)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)'''
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?);'''
         
         cursor.execute(insert_query, (temperature, airpressure, humidity, 
                                     particle_concentration, x_acceleration, 
