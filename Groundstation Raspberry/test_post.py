@@ -9,6 +9,7 @@ data_provider = DataFactory.getInstance()
 url = "http://localhost:5000/send_data"
 
 while True:
+    data_provider.open_connection("sensor_data.db")
     temperature = randint(1, 1024)
     airpressure = randint(1, 1024)
     humidity = randint(1, 1024)
@@ -32,12 +33,15 @@ while True:
     }
 
     try:
-        data_provider.open_connection("sensor_data.db")
         data_provider.save_to_db(data)
-        data_provider.close_connection()
         success = True
     except sqlite3.Error as e:
         print(f"Error saving the data: {e}")
         success = False
 
+    data["success"] = success
+
+    data_provider.post_sensor_data(url, data)
+
+    data_provider.close_connection()
     sleep(1)
