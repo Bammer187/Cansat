@@ -18,6 +18,11 @@
       <div :class="badgeClass" class="badge px-3 py-1 rounded-lg text-white font-semibold">
         {{ statusText }}
       </div>
+      <button @click="deleteEntrys(1)">All</button>
+      <button @click="deleteEntrys(2)">10</button>
+      <button @click="deleteEntrys(3)">24h</button>
+      <input v-model="deleteCount" type="number" min="1" placeholder="Number of Entries" />
+      <button @click="deleteCustomEntries">Delete</button>
     </div>
   </div>
 </template>
@@ -31,9 +36,42 @@ import axios from "axios";
 
 const update = ref<boolean>(true);
 const data_saved = ref<boolean>(false);
+const deleteCount = ref<number>(0);
 
 const badgeClass = computed(() => data_saved.value ? 'bg-green-500' : 'bg-red-500');
 const statusText = computed(() => data_saved.value ? 'OK' : 'ERROR');
+
+/**
+ * 
+ * @param option - What data will be deleted:
+ * 1 - Everything,
+ * 2 - First 10 entrys
+ * 3 - Last 24 hours
+ */
+const deleteEntrys = (option: number) => {
+  axios.delete(`http://127.0.0.1:5000/delete_entry/${option}`)
+    .then(response => {
+      console.log(response.data.message);
+    })
+    .catch(error => {
+      console.error("Error deleting the data:", error);
+    });
+}
+
+const deleteCustomEntries = () => {
+  if (deleteCount.value <= 0) {
+    alert("Bitte eine gültige Anzahl eingeben!");
+    return;
+  }
+
+  axios.post('http://127.0.0.1:5000/delete_custom', { count: deleteCount.value })
+    .then(response => {
+      console.log(response.data.message);
+    })
+    .catch(error => {
+      console.error("Fehler beim Löschen:", error);
+    });
+};
 
 const checkDataSaved = () => {
   axios.get('http://127.0.0.1:5000/check_data_saved')
