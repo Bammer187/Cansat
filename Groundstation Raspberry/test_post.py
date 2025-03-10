@@ -4,24 +4,6 @@ from time import sleep
 import sqlite3
 from datetime import datetime
 
-connection = sqlite3.connect('sensor_data.db')
-cursor = connection.cursor()
-
-create_table = '''CREATE TABLE IF NOT EXISTS sensorValues (
-    id INTEGER PRIMARY KEY,
-    Temperature REAL,
-    Airpressure REAL,
-    Humidity REAL,
-    Particle_concentration REAL,
-    X_Acceleration REAL,
-    Y_Acceleration REAL,
-    Z_Acceleration REAL,
-    Time TEXT DEFAULT (DATETIME('now', 'localtime'))
-);'''
-
-cursor.execute(create_table)
-connection.commit()
-
 url = "http://localhost:5000/send_data"
 
 while True:
