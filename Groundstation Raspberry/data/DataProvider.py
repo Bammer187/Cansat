@@ -3,7 +3,7 @@ class DataProvider:
     def initDB(self):
         raise Exception("Method not yet implemented")
     
-    def post_sensor_data(self, server_url):
+    def post_sensor_data(self, server_url, data):
         raise Exception("Method not yet implemented")
 
     def open_connection(self, database):  
