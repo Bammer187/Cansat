@@ -16,9 +16,9 @@
       <img src="/logo.jpeg"/>
     </div>
     <div class="div8">
-      <button @click="update = !update">Pause</button>
+      <button :class="pauseButtonClass" @click="update = !update"> {{ statusTextPause }}</button>
       <div :class="badgeClass" class="badge px-3 py-1 rounded-lg text-white font-semibold">
-        {{ statusText }}
+        {{ statusTextBadge }}
       </div>
       <button @click="deleteEntries(1)">All</button>
       <button @click="deleteEntries(2)">10</button>
@@ -40,8 +40,11 @@ const update = ref<boolean>(true);
 const data_saved = ref<boolean>(false);
 const deleteCount = ref<number>(0);
 
+const pauseButtonClass = computed(() => update.value ? 'bg-yellow-500' : 'bg-green-500');
+const statusTextPause = computed(() => update.value ? 'PAUSE' : 'CONTINUE');
+ 
 const badgeClass = computed(() => data_saved.value ? 'bg-green-500' : 'bg-red-500');
-const statusText = computed(() => data_saved.value ? 'OK' : 'ERROR');
+const statusTextBadge = computed(() => data_saved.value ? 'OK' : 'ERROR');
 
 /**
  * 
@@ -155,6 +158,10 @@ onMounted(() => {
   display: inline-block;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
+}
+
+.bg-yellow-500 {
+  background-color: #FFF574 !important;
 }
 
 .bg-green-500 {

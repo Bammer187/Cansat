@@ -24,6 +24,7 @@
 1. `(X) ISSUE-021: POST METHOD to send data from sensors`
 1. `() ISSUE-022: Refractor GUI components in div 8`
 1. `() ISSUE-023: Rename and fill divs 7, 8, 9`
+1. `() ISSUE-024: Redesign Buttons`
 
 ## DATABASE ISSUES
 1. `(X) ISSUE-101: create database to save sensor data`
