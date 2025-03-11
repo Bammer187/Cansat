@@ -5,7 +5,7 @@ class DataFactory:
     create_data_provider_task = None
 
     @staticmethod
-    def getInstance():
+    def getInstance() -> SQLDataProvider:
         if DataFactory.instance:
             return DataFactory.instance
         

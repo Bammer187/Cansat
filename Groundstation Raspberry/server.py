@@ -73,7 +73,7 @@ class Server:
             elif option == 2:
                 self.__data_provider.delete_entries(10)
             elif option == 3:
-                pass
+                self.__data_provider.delete_last_24h()
 
             self.__data_provider.close_connection()
 

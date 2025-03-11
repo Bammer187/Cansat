@@ -41,5 +41,6 @@
 1. `(X) ISSUE-113: SQL delete_entries() function`
 1. `(X) ISSUE-114: path to delete a number of entries specified by the user`
 1. `(X) ISSUE-115: SQL delete_all_entries() function`
+1. `(X) ISSUE-116: SQL delet_last_24h() funcition`
 
 ## SENSOR/COMMUNICATION ISSUES
