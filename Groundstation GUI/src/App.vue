@@ -12,7 +12,9 @@
     </div>
 
     <div class="div6"></div>
-    <div class="div7"></div>
+    <div class="logoDiv">
+      <img src="/logo.jpeg"/>
+    </div>
     <div class="div8">
       <button @click="update = !update">Pause</button>
       <div :class="badgeClass" class="badge px-3 py-1 rounded-lg text-white font-semibold">
@@ -129,10 +131,20 @@ onMounted(() => {
   grid-area: 3 / 1 / 4 / 2;
   background-color: red;
 }
-.div7 {
+.logoDiv {
   grid-area: 3 / 2 / 4 / 3;
-  background-color: yellow;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
 }
+
+.logoDiv img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
 .div8 {
   grid-area: 3 / 3 / 4 / 4;
   background-color: blue;
