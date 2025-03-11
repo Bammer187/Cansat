@@ -69,15 +69,15 @@ class Server:
             self.__data_provider.open_connection('sensor_data.db')
 
             if option == 1:
-                self.__data_provider.delete_entries(10)
+                self.__data_provider.delete_all_entries()
             elif option == 2:
-                pass
+                self.__data_provider.delete_entries(10)
             elif option == 3:
                 pass
 
             self.__data_provider.close_connection()
 
-            return jsonify({'message': f'Entry with option {option} deleted successfully'}), 200
+            return jsonify({'message': f'Entries with option {option} deleted successfully'}), 200
         
 
         @self.app.route('/delete_custom/<int:entries>', methods=['DELETE'])

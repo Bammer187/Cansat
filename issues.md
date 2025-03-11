@@ -40,5 +40,6 @@
 1. `(X) ISSUE-112: Rewrite test_post.py with DataProvider`
 1. `(X) ISSUE-113: SQL delete_entries() function`
 1. `(X) ISSUE-114: path to delete a number of entries specified by the user`
+1. `(X) ISSUE-115: SQL delete_all_entries() function`
 
 ## SENSOR/COMMUNICATION ISSUES

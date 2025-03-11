@@ -11,6 +11,9 @@ class DataProvider:
     
     def delete_entries(self, number):
         raise Exception("Method not yet implemented")
+    
+    def delete_all_entries(self):
+        raise Exception("Method not yet implemented")
 
     def open_connection(self, database):  
         raise Exception("Method not yet implemented")

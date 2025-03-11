@@ -15,7 +15,7 @@ class SQLDataProvider(DataProvider):
         self.open_connection(db_name)
 
         create_table = '''CREATE TABLE IF NOT EXISTS sensorValues (
-            id INTEGER PRIMARY KEY,
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             Temperature REAL,
             Airpressure REAL,
             Humidity REAL,
@@ -63,6 +63,10 @@ class SQLDataProvider(DataProvider):
         self.cursor.execute(delete_query, [number])
         self.connection.commit()
 
+    def delete_all_entries(self):
+        self.cursor.execute('DELETE FROM sensorValues')
+        self.cursor.execute('UPDATE sqlite_sequence SET seq = 0 WHERE name="sensorValues";')
+        self.connection.commit()
 
     def open_connection(self, db_name: str) -> None:
         self.connection = sqlite3.connect(db_name)
