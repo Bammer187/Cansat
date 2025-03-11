@@ -28,11 +28,11 @@
 ## DATABASE ISSUES
 1. `(X) ISSUE-101: create database to save sensor data`
 1. `(X) ISSUE-102: display on GUI if data is being saved or if there is an error`
-1. `() ISSUE-103: Button on GUI to delete data from database`
+1. `(X) ISSUE-103: Button on GUI to delete data from database`
 1. `(X) ISSUE-104: save data on each cycle`
 1. `() ISSUE-105: Rewrite test_post.py so that it can started via main.py`
 1. `(X) ISSUE-106: Create Singleton DataFactory`
-1. `() ISSUE-107: abstract class DataProvider`
+1. `(X) ISSUE-107: abstract class DataProvider`
 1. `(X) ISSUE-108: SQL initDB() function`
 1. `(X) ISSUE-109: SQL post_sensor_data() function`
 1. `(X) ISSUE-110: Rename files to snake case`
