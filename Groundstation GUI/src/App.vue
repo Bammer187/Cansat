@@ -16,15 +16,13 @@
       <img src="/logo.jpeg"/>
     </div>
     <div class="div8">
-      <button :class="pauseButtonClass" @click="update = !update"> {{ statusTextPause }}</button>
-      <div :class="badgeClass" class="badge px-3 py-1 rounded-lg text-white font-semibold">
-        {{ statusTextBadge }}
-      </div>
-      <button @click="deleteEntries(1)">All</button>
-      <button @click="deleteEntries(2)">10</button>
-      <button @click="deleteEntries(3)">24h</button>
-      <input v-model="deleteCount" type="number" min="1" placeholder="Number of Entries" />
-      <button @click="deleteCustomEntries(deleteCount)">Delete</button>
+      <Button :label="statusTextPause" :severity="pauseButtonClass" @click="update = !update"></Button>
+      <Badge size="xlarge" :value="statusTextBadge" :severity="badgeClass"></Badge>
+      <Button label="All" @click="deleteEntries(1)"></Button>
+      <Button label="Last 10" @click="deleteEntries(2)" ></Button>
+      <Button label="24h" @click="deleteEntries(3)" ></Button>
+      <InputText type="number" v-model="deleteCount" />
+      <Button label="Delete" @click="deleteCustomEntries(deleteCount)" raised ></Button>
     </div>
   </div>
 </template>
@@ -35,15 +33,18 @@ import * as chartConfig from "@/chartConfig";
 import { onMounted, ref, computed } from "vue";
 import { UPDATE_TIME } from "@/settings";
 import axios from "axios";
+import Button from 'primevue/button';
+import Badge from 'primevue/badge';
+import InputText from "primevue/inputtext";
 
 const update = ref<boolean>(true);
 const data_saved = ref<boolean>(false);
 const deleteCount = ref<number>(0);
 
-const pauseButtonClass = computed(() => update.value ? 'bg-yellow-500' : 'bg-green-500');
+const pauseButtonClass = computed(() => update.value ? 'warn' : 'success');
 const statusTextPause = computed(() => update.value ? 'PAUSE' : 'CONTINUE');
  
-const badgeClass = computed(() => data_saved.value ? 'bg-green-500' : 'bg-red-500');
+const badgeClass = computed(() => data_saved.value ? 'success' : 'danger');
 const statusTextBadge = computed(() => data_saved.value ? 'OK' : 'ERROR');
 
 /**
@@ -158,17 +159,5 @@ onMounted(() => {
   display: inline-block;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
-}
-
-.bg-yellow-500 {
-  background-color: #FFF574 !important;
-}
-
-.bg-green-500 {
-  background-color: #10b981 !important;
-}
-
-.bg-red-500 {
-  background-color: #ef4444 !important;
 }
 </style>
