@@ -17,6 +17,12 @@ class DataProvider:
     
     def delete_last_24h(self):
         raise Exception("Method not yet implemented")
+    
+    def getAllDbEntries(self):
+        raise Exception("Method not yet implemented")
+    
+    def getNewestDbEntry(self):
+        raise Exception("Method not yet implemented")
 
     def open_connection(self, database):  
         raise Exception("Method not yet implemented")
