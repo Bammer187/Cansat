@@ -40,13 +40,13 @@
         :value="statusTextBadge"
         :severity="badgeClass"
       ></Badge>
-      <Button label="All" @click="deleteEntries(1)"></Button>
-      <Button label="Last 10" @click="deleteEntries(2)"></Button>
-      <Button label="24h" @click="deleteEntries(3)"></Button>
+      <Button label="All" @click="http.deleteEntries(1)"></Button>
+      <Button label="Last 10" @click="http.deleteEntries(2)"></Button>
+      <Button label="24h" @click="http.deleteEntries(3)"></Button>
       <InputText type="number" v-model:number="deleteCount" />
       <Button
         label="Delete"
-        @click="deleteCustomEntries(deleteCount)"
+        @click="http.deleteCustomEntries(deleteCount)"
         raised
       ></Button>
     </div>
@@ -58,7 +58,7 @@ import LineChart from "@/components/LineChart.vue";
 import * as chartConfig from "@/chartConfig";
 import { onMounted, ref, computed } from "vue";
 import { UPDATE_TIME } from "@/settings";
-import axios from "axios";
+import * as http from "@/httpFunctions";
 import { Button, Badge, InputText, DataTable, Column } from "primevue";
 
 const update = ref<boolean>(true);
@@ -85,57 +85,10 @@ const dbEntrys = ref(
       }))
     );
 
-/**
- *
- * @param option - What data will be deleted:
- * 1 - Everything,
- * 2 - First 10 entrys
- * 3 - Last 24 hours
- */
-const deleteEntries = (option: number) => {
-  axios.delete(`http://127.0.0.1:5000/delete_entry/${option}`)
-    .then(response => {
-      console.log(response.data.message);
-    })
-    .catch((error) => {
-      console.error("Error deleting the data:", error);
-    });
-}
-
-/**
- *
- * @param entries - How many entrys shall be deleted. The first number of entries specified are deleted.
- */
-const deleteCustomEntries = (entries: number) => {
-  if (deleteCount.value <= 0) {
-    alert("Bitte eine gültige Anzahl eingeben!");
-    return;
-  }
-
-  axios.delete(`http://127.0.0.1:5000/delete_custom/${entries}`)
-    .then(response => {
-      console.log(response.data.message);
-    })
-    .catch(error => {
-      console.error("Fehler beim Löschen:", error);
-    });
-};
-
-const checkDataSaved = () => {
-  axios.get('http://127.0.0.1:5000/check_data_saved')
-  .then(response => {
-    data_saved.value = response.data
-  })
-  .catch(error => {
-    console.log("Error loading the data: ", error);
-  });
-  return data_saved.value;
-};
-
 onMounted(() => {
   setInterval(() => {
-    //chartConfig.updateSensorData(update.value);
-    //checkDataSaved();
+    chartConfig.updateSensorData(update.value);
+    data_saved.value = http.checkDataSaved();
   }, UPDATE_TIME);
 });
 </script>
