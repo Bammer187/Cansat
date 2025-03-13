@@ -6,7 +6,6 @@ sys.path.insert(0, base_dir)
 
 from data.data_factory import DataFactory
 
-
 def main():
     data_provider = DataFactory.getInstance()
 
@@ -19,7 +18,7 @@ def main():
     print(entries)
     print(f"Entries: {len(entries)}")
 
-    data_provider.delete_all_entries()
+    data_provider.delete_last_24h()
 
     print("After delete:")
     entries = data_provider.get_all_db_entries()
