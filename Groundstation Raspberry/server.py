@@ -48,7 +48,7 @@ class Server:
             pass
 
 
-        @self.app.route('/getAllDbEntry', methods= ['GET'])
+        @self.app.route('/getNewestDbEntry', methods= ['GET'])
         def getNewestDbEntry():
             pass
 
