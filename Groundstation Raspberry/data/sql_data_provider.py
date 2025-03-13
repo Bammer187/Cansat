@@ -79,6 +79,12 @@ class SQLDataProvider(DataProvider):
         result = self.cursor.execute('SELECT * FROM sensorValues;')
         self.connection.commit()
         return result.fetchall()
+    
+
+    def getNewestDbEntry(self):
+        result = self.cursor.execute('SELECT * FROM sensorValues ORDER BY id DESC LIMIT 1;')
+        self.connection.commit()
+        return result.fetchone()
 
 
     def open_connection(self, db_name: str) -> None:
