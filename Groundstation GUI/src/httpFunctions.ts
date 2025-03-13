@@ -58,7 +58,7 @@ export const getAllDbEntries = () => {
 
 export const getNewestDbEntries = () => {
     axios
-      .get("http://127.0.0.1:5000/getNewestDbEntries")
+      .get("http://127.0.0.1:5000/getNewestDbEntry")
       .then((response) => {
         return response.data;
       })

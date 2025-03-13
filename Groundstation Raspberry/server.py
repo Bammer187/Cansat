@@ -43,6 +43,16 @@ class Server:
             return jsonify(self.__data["success"])
         
 
+        @self.app.route('/getAllDbEntries', methods= ['GET'])
+        def getAllDbEntries():
+            pass
+
+
+        @self.app.route('/getAllDbEntry', methods= ['GET'])
+        def getNewestDbEntry():
+            pass
+
+
         @self.app.route('/send_data', methods=['GET', 'POST'])
         def update_data():
             try:
