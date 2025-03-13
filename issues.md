@@ -45,5 +45,6 @@
 1. `(X) ISSUE-114: path to delete a number of entries specified by the user`
 1. `(X) ISSUE-115: SQL delete_all_entries() function`
 1. `(X) ISSUE-116: SQL delet_last_24h() funcition`
+1. `() ISSUE-117: Write test files for each dataprovider method`
 
 ## SENSOR/COMMUNICATION ISSUES

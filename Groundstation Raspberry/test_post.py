@@ -1,4 +1,3 @@
-import requests
 from random import randint
 from time import sleep
 import sqlite3
