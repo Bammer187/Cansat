@@ -42,5 +42,27 @@ export const checkDataSaved = (): boolean => {
     .catch((error) => {
       console.log("Error loading the data: ", error);
     });
-    return false;
+  return false;
 };
+
+export const getAllDbEntries = () => {
+  axios
+    .get("http://127.0.0.1:5000/getAllDbEntries")
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.log("Error loading the data: ", error);
+    });
+};
+
+export const getNewestDbEntries = () => {
+    axios
+      .get("http://127.0.0.1:5000/getNewestDbEntries")
+      .then((response) => {
+        return response.data;
+      })
+      .catch((error) => {
+        console.log("Error loading the data: ", error);
+      });
+  };
