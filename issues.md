@@ -25,6 +25,7 @@
 1. `() ISSUE-022: Refractor GUI components in div 8`
 1. `() ISSUE-023: Rename and fill divs 7, 8, 9`
 1. `() ISSUE-024: Redesign Buttons`
+1. `() ISSUE-025: Table to display data from database`
 
 ## DATABASE ISSUES
 1. `(X) ISSUE-101: create database to save sensor data`

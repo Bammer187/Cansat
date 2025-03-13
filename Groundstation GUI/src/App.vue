@@ -11,18 +11,44 @@
       />
     </div>
 
-    <div class="div6"></div>
-    <div class="logoDiv">
-      <img src="/logo.jpeg"/>
+    <div class="div6">
+      <DataTable :value="dbEntrys" scrollable scrollHeight="400px" class="datable">
+        <Column field="id" header="ID"></Column>
+        <Column field="temp" header="Temperature"></Column>
+        <Column field="press" header="Pressure"></Column>
+        <Column field="humi" header="Humidity"></Column>
+        <Column field="part" header="Particle concentration"></Column>
+        <Column field="x" header="X"></Column>
+        <Column field="y" header="Y"></Column>
+        <Column field="z" header="Z"></Column>
+        <Column field="time" header="Time"></Column>
+      </DataTable>
     </div>
+
+    <div class="logoDiv">
+      <img src="/logo.jpeg" />
+    </div>
+
     <div class="div8">
-      <Button :label="statusTextPause" :severity="pauseButtonClass" @click="update = !update"></Button>
-      <Badge size="xlarge" :value="statusTextBadge" :severity="badgeClass"></Badge>
+      <Button
+        :label="statusTextPause"
+        :severity="pauseButtonClass"
+        @click="update = !update"
+      ></Button>
+      <Badge
+        size="xlarge"
+        :value="statusTextBadge"
+        :severity="badgeClass"
+      ></Badge>
       <Button label="All" @click="deleteEntries(1)"></Button>
-      <Button label="Last 10" @click="deleteEntries(2)" ></Button>
-      <Button label="24h" @click="deleteEntries(3)" ></Button>
-      <InputText type="number" v-model="deleteCount" />
-      <Button label="Delete" @click="deleteCustomEntries(deleteCount)" raised ></Button>
+      <Button label="Last 10" @click="deleteEntries(2)"></Button>
+      <Button label="24h" @click="deleteEntries(3)"></Button>
+      <InputText type="number" v-model:number="deleteCount" />
+      <Button
+        label="Delete"
+        @click="deleteCustomEntries(deleteCount)"
+        raised
+      ></Button>
     </div>
   </div>
 </template>
@@ -33,22 +59,34 @@ import * as chartConfig from "@/chartConfig";
 import { onMounted, ref, computed } from "vue";
 import { UPDATE_TIME } from "@/settings";
 import axios from "axios";
-import Button from 'primevue/button';
-import Badge from 'primevue/badge';
-import InputText from "primevue/inputtext";
+import { Button, Badge, InputText, DataTable, Column } from "primevue";
 
 const update = ref<boolean>(true);
 const data_saved = ref<boolean>(false);
 const deleteCount = ref<number>(0);
 
-const pauseButtonClass = computed(() => update.value ? 'warn' : 'success');
-const statusTextPause = computed(() => update.value ? 'PAUSE' : 'CONTINUE');
- 
-const badgeClass = computed(() => data_saved.value ? 'success' : 'danger');
-const statusTextBadge = computed(() => data_saved.value ? 'OK' : 'ERROR');
+const pauseButtonClass = computed(() => (update.value ? "warn" : "success"));
+const statusTextPause = computed(() => (update.value ? "PAUSE" : "CONTINUE"));
+
+const badgeClass = computed(() => (data_saved.value ? "success" : "danger"));
+const statusTextBadge = computed(() => (data_saved.value ? "OK" : "ERROR"));
+
+const dbEntrys = ref(
+      Array.from({ length: 50 }, (_, i) => ({
+        id: i + 1,
+        temp: Math.floor(Math.random() * 1024),
+        press: Math.floor(Math.random() * 1024),
+        humi: Math.floor(Math.random() * 1024),
+        part: Math.floor(Math.random() * 1024),
+        x: Math.floor(Math.random() * 50),
+        y: Math.floor(Math.random() * 50),
+        z: Math.floor(Math.random() * 50),
+        time: new Date().toLocaleTimeString(),
+      }))
+    );
 
 /**
- * 
+ *
  * @param option - What data will be deleted:
  * 1 - Everything,
  * 2 - First 10 entrys
@@ -59,13 +97,13 @@ const deleteEntries = (option: number) => {
     .then(response => {
       console.log(response.data.message);
     })
-    .catch(error => {
+    .catch((error) => {
       console.error("Error deleting the data:", error);
     });
 }
 
 /**
- * 
+ *
  * @param entries - How many entrys shall be deleted. The first number of entries specified are deleted.
  */
 const deleteCustomEntries = (entries: number) => {
@@ -96,8 +134,8 @@ const checkDataSaved = () => {
 
 onMounted(() => {
   setInterval(() => {
-    chartConfig.updateSensorData(update.value);
-    checkDataSaved();
+    //chartConfig.updateSensorData(update.value);
+    //checkDataSaved();
   }, UPDATE_TIME);
 });
 </script>
@@ -131,10 +169,16 @@ onMounted(() => {
 .chart5 {
   grid-area: 1 / 3 / 3 / 4;
 }
+
 .div6 {
   grid-area: 3 / 1 / 4 / 2;
-  background-color: red;
 }
+
+.datatable {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
 .logoDiv {
   grid-area: 3 / 2 / 4 / 3;
   display: flex;
