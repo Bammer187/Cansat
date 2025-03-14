@@ -40,13 +40,13 @@
         :value="statusTextBadge"
         :severity="badgeClass"
       ></Badge>
-      <Button label="All" @click="http.deleteEntries(1)"></Button>
-      <Button label="Last 10" @click="http.deleteEntries(2)"></Button>
-      <Button label="24h" @click="http.deleteEntries(3)"></Button>
+      <Button label="All" @click="http.deleteEntries(1); needFullUpdate = true"></Button>
+      <Button label="Last 10" @click="http.deleteEntries(2); needFullUpdate = true"></Button>
+      <Button label="24h" @click="http.deleteEntries(3); needFullUpdate = true"></Button>
       <InputText type="number" v-model:number="deleteCount" />
       <Button
         label="Delete"
-        @click="http.deleteCustomEntries(deleteCount)"
+        @click="http.deleteCustomEntries(deleteCount); needFullUpdate = true"
         raised
       ></Button>
     </div>
@@ -64,6 +64,7 @@ import { Button, Badge, InputText, DataTable, Column } from "primevue";
 const update = ref<boolean>(true);
 const data_saved = ref<boolean>(false);
 const deleteCount = ref<number>(0);
+const needFullUpdate = ref<boolean>(true);
 
 const pauseButtonClass = computed(() => (update.value ? "warn" : "success"));
 const statusTextPause = computed(() => (update.value ? "PAUSE" : "CONTINUE"));
@@ -71,14 +72,60 @@ const statusTextPause = computed(() => (update.value ? "PAUSE" : "CONTINUE"));
 const badgeClass = computed(() => (data_saved.value ? "success" : "danger"));
 const statusTextBadge = computed(() => (data_saved.value ? "OK" : "ERROR"));
 
-const dbEntrys = ref<JSON[]>([]);
-const newestEntry = ref<JSON>();
+interface SensorData {
+  id: number;
+  temperature: number;
+  pressure: number;
+  humidity: number;
+  particle: number;
+  x: number;
+  y: number;
+  z: number;
+  time: string;
+}
+
+const dbEntrys = ref<SensorData[]>([{
+  id: 0,
+  temperature: 0,
+  pressure: 0,
+  humidity: 0,
+  particle: 0,
+  x: 0,
+  y: 0,
+  z: 0,
+  time: "01-01-2000 00:00:00"
+}]);
+const newestEntry = ref<SensorData>({
+  id: 0,
+  temperature: 0,
+  pressure: 0,
+  humidity: 0,
+  particle: 0,
+  x: 0,
+  y: 0,
+  z: 0,
+  time: "01-01-2000 00:00:00"
+});
 
 onMounted(async () => {
-  dbEntrys.value = await http.getAllDbEntries();
-  setInterval(() => {
+  setInterval(async () => {
     chartConfig.updateSensorData(update.value);
-    data_saved.value = http.checkDataSaved();
+    data_saved.value = await http.checkDataSaved();
+
+    if(needFullUpdate.value){
+      dbEntrys.value = await http.getAllDbEntries();
+      needFullUpdate.value = false;
+    }
+
+    if(data_saved.value){
+      newestEntry.value = await http.getNewestDbEntry();
+      
+      const exists = dbEntrys.value.some(entry => entry.id === newestEntry.value.id);
+  
+      if (!exists) {
+        dbEntrys.value.push(newestEntry.value);
+      }
+    }
   }, UPDATE_TIME);
 });
 </script>

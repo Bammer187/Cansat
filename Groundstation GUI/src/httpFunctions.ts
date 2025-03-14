@@ -1,5 +1,17 @@
 import axios from "axios";
 
+interface SensorData {
+  id: number;
+  temperature: number;
+  pressure: number;
+  humidity: number;
+  particle: number;
+  x: number;
+  y: number;
+  z: number;
+  time: string;
+}
+
 /**
  *
  * @param option - What data will be deleted:
@@ -33,19 +45,18 @@ export const deleteCustomEntries = (entries: number) => {
     });
 };
 
-export const checkDataSaved = (): boolean => {
-  axios
-    .get("http://127.0.0.1:5000/check_data_saved")
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      console.log("Error loading the data: ", error);
-    });
-  return false;
+export const checkDataSaved = async (): Promise<boolean> => {
+  try{
+    const response = await axios.get("http://127.0.0.1:5000/check_data_saved");
+    return response.data
+  } catch (error) {
+    console.log("Error loading the data:", error);
+    return false;
+  }
+  
 };
 
-export const getAllDbEntries = async (): Promise<JSON[]> => {
+export const getAllDbEntries = async (): Promise<SensorData[]> => {
   try {
     const response = await axios.get("http://127.0.0.1:5000/getAllDbEntries");
     console.log("Response Data:", response.data);
@@ -56,13 +67,23 @@ export const getAllDbEntries = async (): Promise<JSON[]> => {
   }
 };
 
-export const getNewestDbEntry = async (): Promise<JSON> => {
+export const getNewestDbEntry = async (): Promise<SensorData> => {
   try {
     const response = await axios.get("http://127.0.0.1:5000/getNewestDbEntry");
     console.log("Response Data:", response.data);
     return response.data;
   } catch (error) {
     console.log("Error loading the data:", error);
-    return JSON;
+    return {
+      id: -1,
+      temperature: 0,
+      pressure: 0,
+      humidity: 0,
+      particle: 0,
+      x: 0,
+      y: 0,
+      z: 0,
+      time: "01-01-2000 00:00:00"
+    }; ;
   }
-  };
+};

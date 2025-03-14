@@ -25,7 +25,7 @@
 1. `() ISSUE-022: Refractor GUI components in div 8`
 1. `() ISSUE-023: Rename and fill divs 7, 8, 9`
 1. `() ISSUE-024: Redesign Buttons`
-1. `() ISSUE-025: Table to display data from database`
+1. `(X) ISSUE-025: Table to display data from database`
 1. `() ISSUE-026: Move http functions to seperate file`
 
 ## DATABASE ISSUES
