@@ -45,7 +45,14 @@ class Server:
 
         @self.app.route('/getAllDbEntries', methods= ['GET'])
         def getAllDbEntries():
-            pass
+            self.__data_provider.open_connection("sensor_data.db")
+            result = self.__data_provider.get_all_db_entries()
+            self.__data_provider.close_connection()
+
+            formatted_result = [dict(id=row[0], temperature=row[1], pressure=row[2], humidity=row[3], particle=row[4],
+                                     x=row[5], y=row[6], z=row[7], time=row[8]) for row in result]
+
+            return jsonify(formatted_result)
 
 
         @self.app.route('/getNewestDbEntry', methods= ['GET'])

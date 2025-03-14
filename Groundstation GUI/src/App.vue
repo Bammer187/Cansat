@@ -14,10 +14,10 @@
     <div class="div6">
       <DataTable :value="dbEntrys" scrollable scrollHeight="400px" class="datable">
         <Column field="id" header="ID"></Column>
-        <Column field="temp" header="Temperature"></Column>
-        <Column field="press" header="Pressure"></Column>
-        <Column field="humi" header="Humidity"></Column>
-        <Column field="part" header="Particle concentration"></Column>
+        <Column field="temperature" header="Temperature"></Column>
+        <Column field="pressure" header="Pressure"></Column>
+        <Column field="humidity" header="Humidity"></Column>
+        <Column field="particle" header="Particle concentration"></Column>
         <Column field="x" header="X"></Column>
         <Column field="y" header="Y"></Column>
         <Column field="z" header="Z"></Column>
@@ -71,21 +71,10 @@ const statusTextPause = computed(() => (update.value ? "PAUSE" : "CONTINUE"));
 const badgeClass = computed(() => (data_saved.value ? "success" : "danger"));
 const statusTextBadge = computed(() => (data_saved.value ? "OK" : "ERROR"));
 
-const dbEntrys = ref(
-      Array.from({ length: 50 }, (_, i) => ({
-        id: i + 1,
-        temp: Math.floor(Math.random() * 1024),
-        press: Math.floor(Math.random() * 1024),
-        humi: Math.floor(Math.random() * 1024),
-        part: Math.floor(Math.random() * 1024),
-        x: Math.floor(Math.random() * 50),
-        y: Math.floor(Math.random() * 50),
-        z: Math.floor(Math.random() * 50),
-        time: new Date().toLocaleTimeString(),
-      }))
-    );
+const dbEntrys = ref<JSON[]>([])
 
-onMounted(() => {
+onMounted(async () => {
+  dbEntrys.value = await http.getAllDbEntries()
   setInterval(() => {
     chartConfig.updateSensorData(update.value);
     data_saved.value = http.checkDataSaved();

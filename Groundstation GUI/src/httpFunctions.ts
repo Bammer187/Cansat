@@ -45,15 +45,15 @@ export const checkDataSaved = (): boolean => {
   return false;
 };
 
-export const getAllDbEntries = () => {
-  axios
-    .get("http://127.0.0.1:5000/getAllDbEntries")
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      console.log("Error loading the data: ", error);
-    });
+export const getAllDbEntries = async (): Promise<JSON[]> => {
+  try {
+    const response = await axios.get("http://127.0.0.1:5000/getAllDbEntries");
+    console.log("Response Data:", response.data);
+    return response.data
+  } catch (error) {
+    console.log("Error loading the data:", error);
+    return [];
+  }
 };
 
 export const getNewestDbEntry = () => {
