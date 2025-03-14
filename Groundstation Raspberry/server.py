@@ -57,7 +57,14 @@ class Server:
 
         @self.app.route('/getNewestDbEntry', methods= ['GET'])
         def getNewestDbEntry():
-            pass
+            self.__data_provider.open_connection("sensor_data.db")
+            result = self.__data_provider.get_newest_db_entry()
+            self.__data_provider.close_connection()
+
+            keys = ["id", "temperature", "pressure", "humidity", "particle", "x", "y", "z", "time"]
+            formatted_result = dict(zip(keys, result))
+
+            return jsonify(formatted_result)
 
 
         @self.app.route('/send_data', methods=['GET', 'POST'])

@@ -71,10 +71,11 @@ const statusTextPause = computed(() => (update.value ? "PAUSE" : "CONTINUE"));
 const badgeClass = computed(() => (data_saved.value ? "success" : "danger"));
 const statusTextBadge = computed(() => (data_saved.value ? "OK" : "ERROR"));
 
-const dbEntrys = ref<JSON[]>([])
+const dbEntrys = ref<JSON[]>([]);
+const newestEntry = ref<JSON>();
 
 onMounted(async () => {
-  dbEntrys.value = await http.getAllDbEntries()
+  dbEntrys.value = await http.getAllDbEntries();
   setInterval(() => {
     chartConfig.updateSensorData(update.value);
     data_saved.value = http.checkDataSaved();
