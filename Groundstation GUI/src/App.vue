@@ -11,7 +11,7 @@
       />
     </div>
 
-    <div class="div6">
+    <div class="dataTableDiv">
       <DataTable :value="dbEntrys" scrollable scrollHeight="400px" class="datable">
         <Column field="id" header="ID"></Column>
         <Column field="temperature" header="Temperature"></Column>
@@ -109,7 +109,7 @@ const newestEntry = ref<SensorData>({
 
 onMounted(async () => {
   setInterval(async () => {
-    chartConfig.updateSensorData(update.value);
+    await chartConfig.updateSensorData(update.value);
     data_saved.value = await http.checkDataSaved();
 
     if(needFullUpdate.value){
@@ -160,7 +160,7 @@ onMounted(async () => {
   grid-area: 1 / 3 / 3 / 4;
 }
 
-.div6 {
+.dataTableDiv{
   grid-area: 3 / 1 / 4 / 2;
 }
 

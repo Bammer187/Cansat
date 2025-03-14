@@ -12,6 +12,20 @@ interface SensorData {
   time: string;
 }
 
+interface Data {
+  temperature: number;
+  pressure: number;
+  humidity: number;
+  particle: number;
+  acceleration: Acceleration;
+}
+
+interface Acceleration {
+  X: number;
+  Y: number;
+  Z: number;
+}
+
 /**
  *
  * @param option - What data will be deleted:
@@ -84,6 +98,27 @@ export const getNewestDbEntry = async (): Promise<SensorData> => {
       y: 0,
       z: 0,
       time: "01-01-2000 00:00:00"
-    }; ;
+    };
+  }
+};
+
+
+export const fetchData = async (): Promise<Data> => {
+  try {
+    const response = await axios.get("http://127.0.0.1:5000/data");
+    return response.data;
+  } catch (error) {
+    console.log("Error loading the data", error);
+    return {
+      temperature: 0,
+      pressure: 0,
+      humidity: 0,
+      particle: 0,
+      acceleration: {
+        X: 0,
+        Y: 0,
+        Z: 0,
+      }
+    }
   }
 };

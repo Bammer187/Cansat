@@ -26,7 +26,7 @@
 1. `() ISSUE-023: Rename and fill divs 7, 8, 9`
 1. `() ISSUE-024: Redesign Buttons`
 1. `(X) ISSUE-025: Table to display data from database`
-1. `() ISSUE-026: Move http functions to seperate file`
+1. `(X) ISSUE-026: Move http functions to seperate file`
 
 ## DATABASE ISSUES
 1. `(X) ISSUE-101: create database to save sensor data`
