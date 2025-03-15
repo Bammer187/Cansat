@@ -11,18 +11,117 @@
       />
     </div>
 
-    <div class="div6"></div>
-    <div class="div7"></div>
-    <div class="div8">
-      <button @click="update = !update">Pause</button>
-      <div :class="badgeClass" class="badge px-3 py-1 rounded-lg text-white font-semibold">
-        {{ statusText }}
+    <div class="dataTableDiv">
+      <DataTable
+        :value="dbEntrys"
+        scrollable
+        scrollHeight="334.33px"
+        stripedRows
+        size="small"
+        class="datable"
+      >
+        <Column field="id" header="ID"></Column>
+        <Column field="temperature" header="Temperature"></Column>
+        <Column field="pressure" header="Pressure"></Column>
+        <Column field="humidity" header="Humidity"></Column>
+        <Column field="particle" header="Particle concentration"></Column>
+        <Column field="x" header="X"></Column>
+        <Column field="y" header="Y"></Column>
+        <Column field="z" header="Z"></Column>
+        <Column field="time" header="Time"></Column>
+      </DataTable>
+    </div>
+
+    <div class="logoDiv">
+      <img src="/logo.jpeg" />
+    </div>
+
+    <div class="controlPanel">
+      <Badge
+        class="div1 textBadge"
+        size="xlarge"
+        value="Update sensorcharts:"
+        style="height: 100%"
+      ></Badge>
+
+      <Button
+        :label="statusTextPause"
+        :severity="pauseButtonClass"
+        @click="update = !update"
+        class="div2"
+      ></Button>
+
+      <Badge
+        size="xlarge"
+        value="Saving to database:"
+        class="div3 textBadge"
+        style="height: 100%"
+      ></Badge>
+
+      <Badge
+        size="xlarge"
+        :value="statusTextBadge"
+        :severity="badgeClass"
+        class="div4"
+        style="height: 100%"
+      ></Badge>
+
+      <Button
+        label="Delete every entry"
+        @click="
+          http.deleteEntries(1);
+          needFullUpdate = true;
+        "
+        class="div7"
+        severity="secondary"
+      ></Button>
+
+      <Button
+        label="Delete oldest ten entries"
+        @click="
+          http.deleteEntries(2);
+          needFullUpdate = true;
+        "
+        class="div8"
+        severity="secondary"
+      ></Button>
+
+      <InputNumber
+        v-model="deleteCount"
+        inputId="integeronly"
+        :min="1"
+        showButtons
+        class="div5"
+      />
+
+      <Button
+        :label="buttonCustomDeleteText"
+        @click="
+          http.deleteCustomEntries(deleteCount);
+          needFullUpdate = true;
+        "
+        class="div9"
+        severity="secondary"
+      ></Button>
+
+      <Button
+        label="Delete last 24 hours"
+        @click="
+          http.deleteEntries(3);
+          needFullUpdate = true;
+        "
+        class="div10"
+        severity="secondary"
+      ></Button>
+
+      <div class="div6">
+        <a class="icon-link" href="https://github.com/Bammer187/Cansat" target="_blank">
+          <Icon icon="mdi-github" width="50px" height="50px" color="currentColor"/>
+        </a>
+        <a class="icon-link" href="https://www.instagram.com/bluebullbulme/" target="_blank">
+          <Icon icon="mdi-instagram" width="50px" height="50px" color="currentColor"/>
+        </a>
       </div>
-      <button @click="deleteEntries(1)">All</button>
-      <button @click="deleteEntries(2)">10</button>
-      <button @click="deleteEntries(3)">24h</button>
-      <input v-model="deleteCount" type="number" min="1" placeholder="Number of Entries" />
-      <button @click="deleteCustomEntries(deleteCount)">Delete</button>
     </div>
   </div>
 </template>
@@ -32,66 +131,90 @@ import LineChart from "@/components/LineChart.vue";
 import * as chartConfig from "@/chartConfig";
 import { onMounted, ref, computed } from "vue";
 import { UPDATE_TIME } from "@/settings";
-import axios from "axios";
+import * as http from "@/httpFunctions";
+import Button from "primevue/button";
+import Badge from "primevue/badge";
+import InputNumber from "primevue/inputnumber";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import { Icon } from "@iconify/vue";
 
 const update = ref<boolean>(true);
 const data_saved = ref<boolean>(false);
-const deleteCount = ref<number>(0);
+const deleteCount = ref<number>(1);
+const needFullUpdate = ref<boolean>(true);
 
-const badgeClass = computed(() => data_saved.value ? 'bg-green-500' : 'bg-red-500');
-const statusText = computed(() => data_saved.value ? 'OK' : 'ERROR');
+const buttonCustomDeleteText = computed(() =>
+  deleteCount.value > 1
+    ? `Delete ${deleteCount.value} oldest entries`
+    : "Delete oldest entry"
+);
 
-/**
- * 
- * @param option - What data will be deleted:
- * 1 - Everything,
- * 2 - First 10 entrys
- * 3 - Last 24 hours
- */
-const deleteEntries = (option: number) => {
-  axios.delete(`http://127.0.0.1:5000/delete_entry/${option}`)
-    .then(response => {
-      console.log(response.data.message);
-    })
-    .catch(error => {
-      console.error("Error deleting the data:", error);
-    });
+const pauseButtonClass = computed(() => (update.value ? "warn" : "success"));
+const statusTextPause = computed(() => (update.value ? "PAUSE" : "CONTINUE"));
+
+const badgeClass = computed(() => (data_saved.value ? "success" : "danger"));
+const statusTextBadge = computed(() => (data_saved.value ? "OK" : "ERROR"));
+
+interface SensorData {
+  id: number;
+  temperature: number;
+  pressure: number;
+  humidity: number;
+  particle: number;
+  x: number;
+  y: number;
+  z: number;
+  time: string;
 }
 
-/**
- * 
- * @param entries - How many entrys shall be deleted. The first number of entries specified are deleted.
- */
-const deleteCustomEntries = (entries: number) => {
-  if (deleteCount.value <= 0) {
-    alert("Bitte eine gültige Anzahl eingeben!");
-    return;
-  }
+const dbEntrys = ref<SensorData[]>([
+  {
+    id: 0,
+    temperature: 0,
+    pressure: 0,
+    humidity: 0,
+    particle: 0,
+    x: 0,
+    y: 0,
+    z: 0,
+    time: "01-01-2000 00:00:00",
+  },
+]);
 
-  axios.delete(`http://127.0.0.1:5000/delete_custom/${entries}`)
-    .then(response => {
-      console.log(response.data.message);
-    })
-    .catch(error => {
-      console.error("Fehler beim Löschen:", error);
-    });
-};
+const newestEntry = ref<SensorData>({
+  id: 0,
+  temperature: 0,
+  pressure: 0,
+  humidity: 0,
+  particle: 0,
+  x: 0,
+  y: 0,
+  z: 0,
+  time: "01-01-2000 00:00:00",
+});
 
-const checkDataSaved = () => {
-  axios.get('http://127.0.0.1:5000/check_data_saved')
-  .then(response => {
-    data_saved.value = response.data
-  })
-  .catch(error => {
-    console.log("Error loading the data: ", error);
-  });
-  return data_saved.value;
-};
+onMounted(async () => {
+  setInterval(async () => {
+    await chartConfig.updateSensorData(update.value);
+    data_saved.value = await http.checkDataSaved();
 
-onMounted(() => {
-  setInterval(() => {
-    chartConfig.updateSensorData(update.value);
-    checkDataSaved();
+    if (needFullUpdate.value) {
+      dbEntrys.value = await http.getAllDbEntries();
+      needFullUpdate.value = false;
+    }
+
+    if (data_saved.value) {
+      newestEntry.value = await http.getNewestDbEntry();
+
+      const exists = dbEntrys.value.some(
+        (entry) => entry.id === newestEntry.value.id
+      );
+
+      if (!exists) {
+        dbEntrys.value.push(newestEntry.value);
+      }
+    }
   }, UPDATE_TIME);
 });
 </script>
@@ -125,17 +248,71 @@ onMounted(() => {
 .chart5 {
   grid-area: 1 / 3 / 3 / 4;
 }
-.div6 {
+
+.dataTableDiv {
   grid-area: 3 / 1 / 4 / 2;
-  background-color: red;
+}
+
+.div1 {
+  grid-area: 1 / 1 / 2 / 2;
+}
+.div2 {
+  grid-area: 1 / 2 / 2 / 3;
+}
+.div3 {
+  grid-area: 2 / 1 / 3 / 2;
+}
+.div4 {
+  grid-area: 2 / 2 / 3 / 3;
+}
+.div5 {
+  grid-area: 3 / 1 / 4 / 3;
+}
+.div6 {
+  grid-area: 4 / 1 / 5 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }
 .div7 {
-  grid-area: 3 / 2 / 4 / 3;
-  background-color: yellow;
+  grid-area: 1 / 3 / 2 / 4;
 }
 .div8 {
+  grid-area: 2 / 3 / 3 / 4;
+}
+.div9 {
   grid-area: 3 / 3 / 4 / 4;
-  background-color: blue;
+}
+.div10 {
+  grid-area: 4 / 3 / 5 / 4;
+}
+
+.datatable {
+  overflow-y: auto;
+}
+
+.logoDiv {
+  grid-area: 3 / 2 / 4 / 3;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.logoDiv img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.controlPanel {
+  grid-area: 3 / 3 / 4 / 4;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 }
 
 .badge {
@@ -145,11 +322,23 @@ onMounted(() => {
   border-radius: 0.5rem;
 }
 
-.bg-green-500 {
-  background-color: #10b981 !important;
+.icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  color: var(--p-button-secondary-hover-color);
+  transition: var(--p-button-secondary-background) 0.3s ease, border-radius 0s;
 }
 
-.bg-red-500 {
-  background-color: #ef4444 !important;
+.icon-link:hover {
+  background-color: var(--p-button-secondary-background);
+  border-radius: 8px;
+}
+
+.textBadge {
+  color: var(--p-button-secondary-hover-color);
+  background-color: var(--p-button-secondary-background);
 }
 </style>

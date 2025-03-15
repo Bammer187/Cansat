@@ -63,14 +63,29 @@ class SQLDataProvider(DataProvider):
         self.cursor.execute(delete_query, [number])
         self.connection.commit()
 
+
     def delete_all_entries(self) -> None:
         self.cursor.execute('DELETE FROM sensorValues')
         self.cursor.execute('UPDATE sqlite_sequence SET seq = 0 WHERE name="sensorValues";')
         self.connection.commit()
 
+
     def delete_last_24h(self) -> None:
         self.cursor.execute("DELETE FROM sensorValues WHERE Time >= DATETIME('now', '-24 hours', 'localtime');")
         self.connection.commit()
+
+
+    def get_all_db_entries(self):
+        result = self.cursor.execute('SELECT * FROM sensorValues;')
+        self.connection.commit()
+        return result.fetchall()
+    
+
+    def get_newest_db_entry(self):
+        result = self.cursor.execute('SELECT * FROM sensorValues ORDER BY id DESC LIMIT 1;')
+        self.connection.commit()
+        return result.fetchone()
+
 
     def open_connection(self, db_name: str) -> None:
         self.connection = sqlite3.connect(db_name)

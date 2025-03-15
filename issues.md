@@ -2,7 +2,7 @@
 
 ## GUI ISSUES
 1. `(X) ISSUE-001: Graphs for temperature, humidity, air pressure, particle-conecntration `
-1. `() ISSUE-002: Display for battery status`
+1. `() ISSUE-002: Display for battery status ------ Won't be implemented`
 1. `(X) ISSUE-003: socket.io/axios integration`
 1. `(X) ISSUE-004: flask server`
 1. `(X) ISSUE-005: created extra page for LineChart`
@@ -22,8 +22,12 @@
 1. `(X) ISSUE-019: rewrite server.py into class that can be accesed in main.py`
 1. `(X) ISSUE-020: Return index.html if the input path is '/' in server.py`
 1. `(X) ISSUE-021: POST METHOD to send data from sensors`
-1. `() ISSUE-022: Refractor GUI components in div 8`
-1. `() ISSUE-023: Rename and fill divs 7, 8, 9`
+1. `(X) ISSUE-022: Refractor GUI components in div 8`
+1. `(X) ISSUE-023: Rename and fill divs 7, 8, 9`
+1. `(X) ISSUE-024: Redesign Buttons`
+1. `(X) ISSUE-025: Table to display data from database`
+1. `(X) ISSUE-026: Move http functions to seperate file`
+1. `(X) ISSUE-027: Different colors depending on system/user prefered style`
 
 ## DATABASE ISSUES
 1. `(X) ISSUE-101: create database to save sensor data`
@@ -42,5 +46,6 @@
 1. `(X) ISSUE-114: path to delete a number of entries specified by the user`
 1. `(X) ISSUE-115: SQL delete_all_entries() function`
 1. `(X) ISSUE-116: SQL delet_last_24h() funcition`
+1. `(X) ISSUE-117: Write test files for each dataprovider method`
 
 ## SENSOR/COMMUNICATION ISSUES

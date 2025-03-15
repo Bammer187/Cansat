@@ -1,7 +1,7 @@
 import type { ChartData, ChartDataset, ChartOptions } from "chart.js";
 import { ref } from "vue";
 import * as settings from "@/settings";
-import axios from "axios";
+import { fetchData } from "./httpFunctions";
 
 interface Data {
   temperature: number;
@@ -201,8 +201,8 @@ export const chartOptionsMap = ref<Record<string, ChartOptions<"line">>>({
 
 let currentTime = 0;
 
-export const updateSensorData = (update: boolean) => {
-  fetchData();
+export const updateSensorData = async (update: boolean) => {
+  data.value = await fetchData();
   currentTime = currentTime + settings.UPDATE_TIME / 1000;
   const label: string = `${currentTime.toFixed(1)}`;
 
@@ -213,7 +213,6 @@ export const updateSensorData = (update: boolean) => {
 
   charts.value.forEach(({ key }: { key: keyof Data }) => {
     if (key === "acceleration") {
-      // random values for x, y, z acceleration
       const newReadingX: number = data.value["acceleration"]["X"];
       const newReadingY: number = data.value["acceleration"]["Y"];
       const newReadingZ: number = data.value["acceleration"]["Z"];
@@ -258,15 +257,4 @@ export const updateSensorData = (update: boolean) => {
       }
     }
   });
-};
-
-const fetchData = () => {
-  axios.get('http://127.0.0.1:5000/data')
-  .then(response => {
-    data.value = response.data
-  })
-  .catch(error => {
-    console.log("Error loading the data: ", error);
-  });
-  return data.value;
 };

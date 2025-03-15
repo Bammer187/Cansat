@@ -43,6 +43,30 @@ class Server:
             return jsonify(self.__data["success"])
         
 
+        @self.app.route('/getAllDbEntries', methods= ['GET'])
+        def getAllDbEntries():
+            self.__data_provider.open_connection("sensor_data.db")
+            result = self.__data_provider.get_all_db_entries()
+            self.__data_provider.close_connection()
+
+            formatted_result = [dict(id=row[0], temperature=row[1], pressure=row[2], humidity=row[3], particle=row[4],
+                                     x=row[5], y=row[6], z=row[7], time=row[8]) for row in result]
+
+            return jsonify(formatted_result)
+
+
+        @self.app.route('/getNewestDbEntry', methods= ['GET'])
+        def getNewestDbEntry():
+            self.__data_provider.open_connection("sensor_data.db")
+            result = self.__data_provider.get_newest_db_entry()
+            self.__data_provider.close_connection()
+
+            keys = ["id", "temperature", "pressure", "humidity", "particle", "x", "y", "z", "time"]
+            formatted_result = dict(zip(keys, result))
+
+            return jsonify(formatted_result)
+
+
         @self.app.route('/send_data', methods=['GET', 'POST'])
         def update_data():
             try:
