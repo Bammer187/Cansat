@@ -52,3 +52,5 @@
 1. `(X) ISSUE-201: Two Projekts - one for transmitter / one for receiver`
 1. `(X) ISSUE-202: Receiver init`
 1. `(X) ISSUE-203: Transmitter init`
+1. `(X) ISSUE-204: Send message from transmitter`
+1. `() ISSUE-205: Receive and print message from transmitter`
