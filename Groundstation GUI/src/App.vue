@@ -111,8 +111,12 @@
       ></Button>
 
       <div class="div6">
-        <Icon icon="mdi-github" width="50px" height="50px" />
-        <Icon icon="mdi-instagram" width="50px" height="50px" />
+        <a class="icon-link" href="https://github.com/Bammer187/Cansat" target="_blank">
+          <Icon icon="mdi-github" width="50px" height="50px" color="currentColor"/>
+        </a>
+        <a class="icon-link" href="https://www.instagram.com/bluebullbulme/" target="_blank">
+          <Icon icon="mdi-instagram" width="50px" height="50px" color="currentColor"/>
+        </a>
       </div>
     </div>
   </div>
@@ -188,16 +192,16 @@ const newestEntry = ref<SensorData>({
 
 onMounted(async () => {
   setInterval(async () => {
-    await chartConfig.updateSensorData(update.value);
-    data_saved.value = await http.checkDataSaved();
+    //await chartConfig.updateSensorData(update.value);
+    //data_saved.value = await http.checkDataSaved();
 
     if (needFullUpdate.value) {
-      dbEntrys.value = await http.getAllDbEntries();
+      //dbEntrys.value = await http.getAllDbEntries();
       needFullUpdate.value = false;
     }
 
     if (data_saved.value) {
-      newestEntry.value = await http.getNewestDbEntry();
+      //newestEntry.value = await http.getNewestDbEntry();
 
       const exists = dbEntrys.value.some(
         (entry) => entry.id === newestEntry.value.id
@@ -308,5 +312,21 @@ onMounted(async () => {
   display: inline-block;
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
+}
+
+.icon-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  transition: #3C3D37 0.3s ease;
+  color: black;
+}
+
+.icon-link:hover {
+  background-color: #3C3D37;
+  border-radius: 8px;
+  color: white;
 }
 </style>
