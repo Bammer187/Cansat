@@ -40,12 +40,12 @@
         :value="statusTextBadge"
         :severity="badgeClass"
       ></Badge>
-      <Button label="All" @click="http.deleteEntries(1); needFullUpdate = true"></Button>
-      <Button label="First 10" @click="http.deleteEntries(2); needFullUpdate = true"></Button>
-      <Button label="24h" @click="http.deleteEntries(3); needFullUpdate = true"></Button>
-      <InputText type="number" v-model:number="deleteCount" />
+      <Button label="Delete every entry" @click="http.deleteEntries(1); needFullUpdate = true"></Button>
+      <Button label="Delete oldest ten entries" @click="http.deleteEntries(2); needFullUpdate = true"></Button>
+      <Button label="Delete last 24 hours" @click="http.deleteEntries(3); needFullUpdate = true"></Button>
+      <InputNumber v-model="deleteCount" inputId="integeronly" :min="1" showButtons />
       <Button
-        label="Delete"
+        :label="buttonCustomDeleteText"
         @click="http.deleteCustomEntries(deleteCount); needFullUpdate = true"
         raised
       ></Button>
@@ -61,14 +61,16 @@ import { UPDATE_TIME } from "@/settings";
 import * as http from "@/httpFunctions";
 import Button from "primevue/button";
 import Badge from "primevue/badge";
-import InputText from "primevue/inputtext";
+import InputNumber from "primevue/inputnumber";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
 
 const update = ref<boolean>(true);
 const data_saved = ref<boolean>(false);
-const deleteCount = ref<number>(0);
+const deleteCount = ref<number>(1);
 const needFullUpdate = ref<boolean>(true);
+
+const buttonCustomDeleteText = computed(() => deleteCount.value > 1 ? `Delete ${deleteCount.value} oldest entries`: 'Delete oldest entry');
 
 const pauseButtonClass = computed(() => (update.value ? "warn" : "success"));
 const statusTextPause = computed(() => (update.value ? "PAUSE" : "CONTINUE"));
@@ -99,6 +101,7 @@ const dbEntrys = ref<SensorData[]>([{
   z: 0,
   time: "01-01-2000 00:00:00"
 }]);
+
 const newestEntry = ref<SensorData>({
   id: 0,
   temperature: 0,
