@@ -2,7 +2,7 @@
 
 ## GUI ISSUES
 1. `(X) ISSUE-001: Graphs for temperature, humidity, air pressure, particle-conecntration `
-1. `() ISSUE-002: Display for battery status`
+1. `() ISSUE-002: Display for battery status ------ Won't be implemented`
 1. `(X) ISSUE-003: socket.io/axios integration`
 1. `(X) ISSUE-004: flask server`
 1. `(X) ISSUE-005: created extra page for LineChart`

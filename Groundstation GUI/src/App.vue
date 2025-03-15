@@ -12,7 +12,7 @@
     </div>
 
     <div class="dataTableDiv">
-      <DataTable :value="dbEntrys" scrollable scrollHeight="400px" class="datable">
+      <DataTable :value="dbEntrys" scrollable scrollHeight="334.33px" stripedRows size="small" class="datable">
         <Column field="id" header="ID"></Column>
         <Column field="temperature" header="Temperature"></Column>
         <Column field="pressure" header="Pressure"></Column>
@@ -41,7 +41,7 @@
         :severity="badgeClass"
       ></Badge>
       <Button label="All" @click="http.deleteEntries(1); needFullUpdate = true"></Button>
-      <Button label="Last 10" @click="http.deleteEntries(2); needFullUpdate = true"></Button>
+      <Button label="First 10" @click="http.deleteEntries(2); needFullUpdate = true"></Button>
       <Button label="24h" @click="http.deleteEntries(3); needFullUpdate = true"></Button>
       <InputText type="number" v-model:number="deleteCount" />
       <Button
@@ -59,7 +59,11 @@ import * as chartConfig from "@/chartConfig";
 import { onMounted, ref, computed } from "vue";
 import { UPDATE_TIME } from "@/settings";
 import * as http from "@/httpFunctions";
-import { Button, Badge, InputText, DataTable, Column } from "primevue";
+import Button from "primevue/button";
+import Badge from "primevue/badge";
+import InputText from "primevue/inputtext";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
 
 const update = ref<boolean>(true);
 const data_saved = ref<boolean>(false);
@@ -165,7 +169,6 @@ onMounted(async () => {
 }
 
 .datatable {
-  max-height: 400px;
   overflow-y: auto;
 }
 
