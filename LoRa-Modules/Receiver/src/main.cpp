@@ -1,18 +1,33 @@
 #include <Arduino.h>
+#include <SPi.h>
+#include <LoRa.h>
 
-// put function declarations here:
-int myFunction(int, int);
+// LoRa-Pins
+#define LORA_CS 18
+#define LORA_RST 23
+#define LORA_DIO 26
 
-void setup() {
-  // put your setup code here, to run once:
-  int result = myFunction(2, 3);
+// SPI-Pins
+#define LORA_SCLK 5
+#define LORA_MISO 19
+#define LORA_MOSI 27
+
+const long frequency = 868E6;
+
+void setup(){
+  Serial.begin(9600);
+  SPI.begin(LORA_SCLK, LORA_MISO, LORA_MOSI);
+  LoRa.setPins(LORA_CS, LORA_RST, LORA_DIO); 
+
+  if (!LoRa.begin(frequency)) {
+    Serial.println("LoRa init failed.");
+    while (true){
+      delay(500);
+    };
+  }
+  Serial.println("LoRa init successfull");
 }
 
-void loop() {
-  // put your main code here, to run repeatedly:
-}
+void loop(){
 
-// put function definitions here:
-int myFunction(int x, int y) {
-  return x + y;
 }
