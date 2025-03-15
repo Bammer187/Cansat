@@ -29,7 +29,7 @@
       <img src="/logo.jpeg" />
     </div>
 
-    <div class="div8">
+    <div class="controlPanel">
       <Button
         :label="statusTextPause"
         :severity="pauseButtonClass"
@@ -49,6 +49,8 @@
         @click="http.deleteCustomEntries(deleteCount); needFullUpdate = true"
         raised
       ></Button>
+      <Icon icon="mdi-github" width="50px" height="50px" />
+      <Icon icon="mdi-instagram" width="50px" height="50px" />
     </div>
   </div>
 </template>
@@ -64,6 +66,7 @@ import Badge from "primevue/badge";
 import InputNumber from "primevue/inputnumber";
 import DataTable from "primevue/datatable";
 import Column from "primevue/column";
+import { Icon } from "@iconify/vue";
 
 const update = ref<boolean>(true);
 const data_saved = ref<boolean>(false);
@@ -189,9 +192,13 @@ onMounted(async () => {
   object-fit: contain;
 }
 
-.div8 {
+.controlPanel {
   grid-area: 3 / 3 / 4 / 4;
-  background-color: blue;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  grid-column-gap: 10px;
+  grid-row-gap: 10px; 
 }
 
 .badge {
