@@ -49,3 +49,4 @@
 1. `(X) ISSUE-117: Write test files for each dataprovider method`
 
 ## SENSOR/COMMUNICATION ISSUES
+1. `(X) ISSUE-201: Two Projekts - one for transmitter / one for receiver`
