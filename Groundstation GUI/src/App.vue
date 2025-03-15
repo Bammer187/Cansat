@@ -73,6 +73,7 @@
           needFullUpdate = true;
         "
         class="div7"
+        severity="secondary"
       ></Button>
 
       <Button
@@ -82,6 +83,7 @@
           needFullUpdate = true;
         "
         class="div8"
+        severity="secondary"
       ></Button>
 
       <InputNumber
@@ -99,6 +101,7 @@
           needFullUpdate = true;
         "
         class="div9"
+        severity="secondary"
       ></Button>
 
       <Button
@@ -108,6 +111,7 @@
           needFullUpdate = true;
         "
         class="div10"
+        severity="secondary"
       ></Button>
 
       <div class="div6">
@@ -320,13 +324,12 @@ onMounted(async () => {
   justify-content: center;
   width: 50px;
   height: 50px;
-  transition: #3C3D37 0.3s ease;
-  color: black;
+  color: var(--p-button-secondary-hover-color);
+  transition: var(--p-button-secondary-background) 0.3s ease, border-radius 0s;
 }
 
 .icon-link:hover {
-  background-color: #3C3D37;
+  background-color: var(--p-button-secondary-background);
   border-radius: 8px;
-  color: white;
 }
 </style>
