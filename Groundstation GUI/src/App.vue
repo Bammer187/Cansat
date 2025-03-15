@@ -12,7 +12,14 @@
     </div>
 
     <div class="dataTableDiv">
-      <DataTable :value="dbEntrys" scrollable scrollHeight="334.33px" stripedRows size="small" class="datable">
+      <DataTable
+        :value="dbEntrys"
+        scrollable
+        scrollHeight="334.33px"
+        stripedRows
+        size="small"
+        class="datable"
+      >
         <Column field="id" header="ID"></Column>
         <Column field="temperature" header="Temperature"></Column>
         <Column field="pressure" header="Pressure"></Column>
@@ -30,27 +37,83 @@
     </div>
 
     <div class="controlPanel">
+      <Badge
+        class="div1"
+        size="xlarge"
+        value="Update sensorcharts:"
+        style="height: 100%"
+      ></Badge>
+
       <Button
         :label="statusTextPause"
         :severity="pauseButtonClass"
         @click="update = !update"
+        class="div2"
       ></Button>
+
+      <Badge
+        size="xlarge"
+        value="Saving to database:"
+        class="div3"
+        style="height: 100%"
+      ></Badge>
+
       <Badge
         size="xlarge"
         :value="statusTextBadge"
         :severity="badgeClass"
+        class="div4"
+        style="height: 100%"
       ></Badge>
-      <Button label="Delete every entry" @click="http.deleteEntries(1); needFullUpdate = true"></Button>
-      <Button label="Delete oldest ten entries" @click="http.deleteEntries(2); needFullUpdate = true"></Button>
-      <Button label="Delete last 24 hours" @click="http.deleteEntries(3); needFullUpdate = true"></Button>
-      <InputNumber v-model="deleteCount" inputId="integeronly" :min="1" showButtons />
+
+      <Button
+        label="Delete every entry"
+        @click="
+          http.deleteEntries(1);
+          needFullUpdate = true;
+        "
+        class="div7"
+      ></Button>
+
+      <Button
+        label="Delete oldest ten entries"
+        @click="
+          http.deleteEntries(2);
+          needFullUpdate = true;
+        "
+        class="div8"
+      ></Button>
+
+      <InputNumber
+        v-model="deleteCount"
+        inputId="integeronly"
+        :min="1"
+        showButtons
+        class="div5"
+      />
+
       <Button
         :label="buttonCustomDeleteText"
-        @click="http.deleteCustomEntries(deleteCount); needFullUpdate = true"
-        raised
+        @click="
+          http.deleteCustomEntries(deleteCount);
+          needFullUpdate = true;
+        "
+        class="div9"
       ></Button>
-      <Icon icon="mdi-github" width="50px" height="50px" />
-      <Icon icon="mdi-instagram" width="50px" height="50px" />
+
+      <Button
+        label="Delete last 24 hours"
+        @click="
+          http.deleteEntries(3);
+          needFullUpdate = true;
+        "
+        class="div10"
+      ></Button>
+
+      <div class="div6">
+        <Icon icon="mdi-github" width="50px" height="50px" />
+        <Icon icon="mdi-instagram" width="50px" height="50px" />
+      </div>
     </div>
   </div>
 </template>
@@ -73,7 +136,11 @@ const data_saved = ref<boolean>(false);
 const deleteCount = ref<number>(1);
 const needFullUpdate = ref<boolean>(true);
 
-const buttonCustomDeleteText = computed(() => deleteCount.value > 1 ? `Delete ${deleteCount.value} oldest entries`: 'Delete oldest entry');
+const buttonCustomDeleteText = computed(() =>
+  deleteCount.value > 1
+    ? `Delete ${deleteCount.value} oldest entries`
+    : "Delete oldest entry"
+);
 
 const pauseButtonClass = computed(() => (update.value ? "warn" : "success"));
 const statusTextPause = computed(() => (update.value ? "PAUSE" : "CONTINUE"));
@@ -93,17 +160,19 @@ interface SensorData {
   time: string;
 }
 
-const dbEntrys = ref<SensorData[]>([{
-  id: 0,
-  temperature: 0,
-  pressure: 0,
-  humidity: 0,
-  particle: 0,
-  x: 0,
-  y: 0,
-  z: 0,
-  time: "01-01-2000 00:00:00"
-}]);
+const dbEntrys = ref<SensorData[]>([
+  {
+    id: 0,
+    temperature: 0,
+    pressure: 0,
+    humidity: 0,
+    particle: 0,
+    x: 0,
+    y: 0,
+    z: 0,
+    time: "01-01-2000 00:00:00",
+  },
+]);
 
 const newestEntry = ref<SensorData>({
   id: 0,
@@ -114,7 +183,7 @@ const newestEntry = ref<SensorData>({
   x: 0,
   y: 0,
   z: 0,
-  time: "01-01-2000 00:00:00"
+  time: "01-01-2000 00:00:00",
 });
 
 onMounted(async () => {
@@ -122,16 +191,18 @@ onMounted(async () => {
     await chartConfig.updateSensorData(update.value);
     data_saved.value = await http.checkDataSaved();
 
-    if(needFullUpdate.value){
+    if (needFullUpdate.value) {
       dbEntrys.value = await http.getAllDbEntries();
       needFullUpdate.value = false;
     }
 
-    if(data_saved.value){
+    if (data_saved.value) {
       newestEntry.value = await http.getNewestDbEntry();
-      
-      const exists = dbEntrys.value.some(entry => entry.id === newestEntry.value.id);
-  
+
+      const exists = dbEntrys.value.some(
+        (entry) => entry.id === newestEntry.value.id
+      );
+
       if (!exists) {
         dbEntrys.value.push(newestEntry.value);
       }
@@ -170,8 +241,39 @@ onMounted(async () => {
   grid-area: 1 / 3 / 3 / 4;
 }
 
-.dataTableDiv{
+.dataTableDiv {
   grid-area: 3 / 1 / 4 / 2;
+}
+
+.div1 {
+  grid-area: 1 / 1 / 2 / 2;
+}
+.div2 {
+  grid-area: 1 / 2 / 2 / 3;
+}
+.div3 {
+  grid-area: 2 / 1 / 3 / 2;
+}
+.div4 {
+  grid-area: 2 / 2 / 3 / 3;
+}
+.div5 {
+  grid-area: 3 / 1 / 4 / 3;
+}
+.div6 {
+  grid-area: 4 / 1 / 5 / 3;
+}
+.div7 {
+  grid-area: 1 / 3 / 2 / 4;
+}
+.div8 {
+  grid-area: 2 / 3 / 3 / 4;
+}
+.div9 {
+  grid-area: 3 / 3 / 4 / 4;
+}
+.div10 {
+  grid-area: 4 / 3 / 5 / 4;
 }
 
 .datatable {
@@ -198,7 +300,7 @@ onMounted(async () => {
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(4, 1fr);
   grid-column-gap: 10px;
-  grid-row-gap: 10px; 
+  grid-row-gap: 10px;
 }
 
 .badge {
