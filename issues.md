@@ -51,4 +51,4 @@
 ## SENSOR/COMMUNICATION ISSUES
 1. `(X) ISSUE-201: Two Projekts - one for transmitter / one for receiver`
 1. `(X) ISSUE-202: Receiver init`
-1. `() ISSUE-203: Transmitter init`
+1. `(X) ISSUE-203: Transmitter init`
