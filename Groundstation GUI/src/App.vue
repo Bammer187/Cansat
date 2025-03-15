@@ -38,7 +38,7 @@
 
     <div class="controlPanel">
       <Badge
-        class="div1"
+        class="div1 textBadge"
         size="xlarge"
         value="Update sensorcharts:"
         style="height: 100%"
@@ -54,7 +54,7 @@
       <Badge
         size="xlarge"
         value="Saving to database:"
-        class="div3"
+        class="div3 textBadge"
         style="height: 100%"
       ></Badge>
 
@@ -196,16 +196,16 @@ const newestEntry = ref<SensorData>({
 
 onMounted(async () => {
   setInterval(async () => {
-    //await chartConfig.updateSensorData(update.value);
-    //data_saved.value = await http.checkDataSaved();
+    await chartConfig.updateSensorData(update.value);
+    data_saved.value = await http.checkDataSaved();
 
     if (needFullUpdate.value) {
-      //dbEntrys.value = await http.getAllDbEntries();
+      dbEntrys.value = await http.getAllDbEntries();
       needFullUpdate.value = false;
     }
 
     if (data_saved.value) {
-      //newestEntry.value = await http.getNewestDbEntry();
+      newestEntry.value = await http.getNewestDbEntry();
 
       const exists = dbEntrys.value.some(
         (entry) => entry.id === newestEntry.value.id
@@ -270,6 +270,10 @@ onMounted(async () => {
 }
 .div6 {
   grid-area: 4 / 1 / 5 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }
 .div7 {
   grid-area: 1 / 3 / 2 / 4;
@@ -331,5 +335,10 @@ onMounted(async () => {
 .icon-link:hover {
   background-color: var(--p-button-secondary-background);
   border-radius: 8px;
+}
+
+.textBadge {
+  color: var(--p-button-secondary-hover-color);
+  background-color: var(--p-button-secondary-background);
 }
 </style>
