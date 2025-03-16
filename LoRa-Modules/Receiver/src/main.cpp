@@ -29,5 +29,13 @@ void setup(){
 }
 
 void loop(){
-
+  int packetSize = LoRa.parsePacket();
+  if(packetSize) {
+    Serial.println("Received Package");
+    while (LoRa.available()) {
+      Serial.print((char)LoRa.read());
+    }
+    Serial.print("  RSSI:  ");
+    Serial.println(LoRa.packetRssi());
+  }
 }
