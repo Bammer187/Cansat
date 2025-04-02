@@ -20,6 +20,8 @@
 #define I2C_SDA 15
 #define I2C_SLC 4
 
+#define analogMQ135 35
+
 const long frequency = 868E6;
 
 void LoRa_txMode();
@@ -34,6 +36,10 @@ void setup(){
   SPI.begin(LORA_SCLK, LORA_MISO, LORA_MOSI);
   LoRa.setPins(LORA_CS, LORA_RST, LORA_DIO); 
   Wire.begin(I2C_SDA, I2C_SLC);
+
+  analogWrite(analogMQ135, HIGH);
+  // heat for 1 min
+  delay(60000);
 
   if (!LoRa.begin(frequency)) {
     Serial.println("LoRa init failed.");
@@ -85,7 +91,9 @@ void loop(){
   float pressure = bme.readPressure();
   float temperature = bme.readTemperature();
 
-  delay(500);
+  int particleConcentration = analogRead(analogMQ135);
+
+  delay(1000);
 }
 
 void LoRa_txMode() {
