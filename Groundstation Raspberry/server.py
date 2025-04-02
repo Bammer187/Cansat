@@ -44,7 +44,7 @@ class Server:
         
 
         @self.app.route('/getAllDbEntries', methods= ['GET'])
-        def getAllDbEntries():
+        def get_all_db_entries():
             self.__data_provider.open_connection("sensor_data.db")
             result = self.__data_provider.get_all_db_entries()
             self.__data_provider.close_connection()
@@ -56,7 +56,7 @@ class Server:
 
 
         @self.app.route('/getNewestDbEntry', methods= ['GET'])
-        def getNewestDbEntry():
+        def get_newest_db_entry():
             self.__data_provider.open_connection("sensor_data.db")
             result = self.__data_provider.get_newest_db_entry()
             self.__data_provider.close_connection()

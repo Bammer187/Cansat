@@ -7,7 +7,7 @@ import sqlite3
 
 
 class Esp32SerialBridge:
-    def __init__(self, port="/dev/serial0", baudrate=115200, server_url="127.0.0.1/send_data"):
+    def __init__(self, port="/dev/serial0", baudrate=115200, server_url="127.0.0.1:5000/send_data"):
         self.ser = serial.Serial(port, baudrate, timeout=1)
         self.server_url = server_url
         self.__data = {
@@ -22,10 +22,10 @@ class Esp32SerialBridge:
         self.running = True  # Stop-flag for threads
 
 
-    def receive_data(self):
+    def receive_data(self) -> None:
         while self.running:
             try:
-                if self.ser.in_waiting >= 28:
+                if self.ser.in_waiting >= 28: # Number of bytes expected, for each variable 4 bytes
                     data = self.ser.read(28)
                     accX, accY, accZ, temperature, humidity, pressure, particle_concentration = struct.unpack('fffffff', data)
 
@@ -42,7 +42,7 @@ class Esp32SerialBridge:
             sleep(0.1)
 
 
-    def send_to_server(self):
+    def send_to_server(self) -> None:
         while self.running:
             self.__data_provider.open_connection("sensor_data.db")
             try:

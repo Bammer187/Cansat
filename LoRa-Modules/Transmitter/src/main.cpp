@@ -1,8 +1,9 @@
 #include <Arduino.h>
-#include <SPi.h>
+#include <SPI.h>
 #include <LoRa.h>
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
+#include <Adafruit_BME280.h>
 #include <Adafruit_ADXL345_U.h>
 
 // LoRa-Pins
@@ -26,6 +27,7 @@ void LoRa_sendMessage(String message);
 boolean runEvery(unsigned long interval);
 
 Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified(12345);
+Adafruit_BME280 bme;
 
 void setup(){
   Serial.begin(9600);
@@ -49,6 +51,15 @@ void setup(){
     while(1);
   }
 
+  unsigned status;
+
+  status = bme.begin(0x76, &Wire);
+
+  if(!status){
+    Serial.println("Could not find a BME280 Sensor");
+    while(1);
+  }
+
   accel.setRange(ADXL345_RANGE_2_G);
 }
 
@@ -66,10 +77,14 @@ void loop(){
   sensors_event_t event; 
   accel.getEvent(&event);
  
-  /* Display the results (acceleration is measured in m/s^2) */
-  Serial.print("X: "); Serial.print(event.acceleration.x); Serial.print("  ");
-  Serial.print("Y: "); Serial.print(event.acceleration.y); Serial.print("  ");
-  Serial.print("Z: "); Serial.print(event.acceleration.z); Serial.print("  ");Serial.println("m/s^2 ");
+  float xAcceleration = event.acceleration.x;
+  float yAcceleration = event.acceleration.y;
+  float zAcceleration = event.acceleration.z;
+
+  float humidity = bme.readHumidity();
+  float pressure = bme.readPressure();
+  float temperature = bme.readTemperature();
+
   delay(500);
 }
 

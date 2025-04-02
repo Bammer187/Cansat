@@ -75,13 +75,13 @@ class SQLDataProvider(DataProvider):
         self.connection.commit()
 
 
-    def get_all_db_entries(self):
+    def get_all_db_entries(self) -> list[tuple]:
         result = self.cursor.execute('SELECT * FROM sensorValues;')
         self.connection.commit()
         return result.fetchall()
     
 
-    def get_newest_db_entry(self):
+    def get_newest_db_entry(self) -> list:
         result = self.cursor.execute('SELECT * FROM sensorValues ORDER BY id DESC LIMIT 1;')
         self.connection.commit()
         return result.fetchone()
