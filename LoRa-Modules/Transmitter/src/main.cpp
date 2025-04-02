@@ -72,28 +72,31 @@ void setup(){
 void loop(){
   if (runEvery(1000)) { // repeat every 1000 millis
 
-    String message = "HeLoRa World! ";
-    message += "I'm a Node! ";
-    message += millis();
+    sensors_event_t event; 
+    accel.getEvent(&event);
+  
+    float xAcceleration = event.acceleration.x;
+    float yAcceleration = event.acceleration.y;
+    float zAcceleration = event.acceleration.z;
 
-    LoRa_sendMessage(message); // send a message
+    float humidity = bme.readHumidity();
+    float pressure = bme.readPressure();
+    float temperature = bme.readTemperature();
+
+    int particleConcentration = analogRead(analogMQ135);
+
+    String dataString = String(xAcceleration, 2) + ";" +
+                        String(yAcceleration, 2) + ";" +
+                        String(zAcceleration, 2) + ";" +
+                        String(temperature, 2) + ";" +
+                        String(humidity, 2) + ";" +
+                        String(pressure, 2) + ";" +
+                        String(particleConcentration);
+
+    LoRa_sendMessage(dataString); // send a message
 
     Serial.println("Send Message!");
   }
-  sensors_event_t event; 
-  accel.getEvent(&event);
- 
-  float xAcceleration = event.acceleration.x;
-  float yAcceleration = event.acceleration.y;
-  float zAcceleration = event.acceleration.z;
-
-  float humidity = bme.readHumidity();
-  float pressure = bme.readPressure();
-  float temperature = bme.readTemperature();
-
-  int particleConcentration = analogRead(analogMQ135);
-
-  delay(1000);
 }
 
 void LoRa_txMode() {

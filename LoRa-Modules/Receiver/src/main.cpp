@@ -17,12 +17,14 @@ HardwareSerial mySerial(1);
 
 const long frequency = 868E6;
 
-float accX = 0.123f, accY = 1.456f, accZ = 9.876f;
-float temperature = 22.5f;
-float humidity = 50.0f;
-float pressure = 1013.25f;
-float particleConcentration = 90.1f;
+float xAcceleration = 0.0f, yAcceleration = 0.0f, zAcceleration = 0.0f;
+float temperature = 0.0f;
+float humidity = 0.0f;
+float pressure = 0.0f;
+int particleConcentration = 0;
 
+boolean runEvery(unsigned long interval);
+void parseData(String data);
 void sendSensorData();
 
 void setup(){
@@ -41,28 +43,54 @@ void setup(){
 }
 
 void loop(){
-  int packetSize = LoRa.parsePacket();
-  if(packetSize) {
-    Serial.println("Received Package");
-    while (LoRa.available()) {
-      Serial.print((char)LoRa.read());
+  if(runEvery(1000)){
+    int packetSize = LoRa.parsePacket();
+    String dataString = "";
+    if(packetSize) {
+      Serial.println("Received Package");
+      while (LoRa.available()) {
+        dataString += (char)LoRa.read();
+      }
     }
-    Serial.print("  RSSI:  ");
-    Serial.println(LoRa.packetRssi());
+    parseData(dataString);
+    sendSensorData();
   }
+}
 
- sendSensorData();
+boolean runEvery(unsigned long interval) {
+  static unsigned long previousMillis = 0;
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= interval)
+  {
+    previousMillis = currentMillis;
+    return true;
+  }
+  return false;
+}
 
-  delay(1000);
+void parseData(String data){
+  int index1 = data.indexOf(';');
+  int index2 = data.indexOf(';', index1 + 1);
+  int index3 = data.indexOf(';', index2 + 1);
+  int index4 = data.indexOf(';', index3 + 1);
+  int index5 = data.indexOf(';', index4 + 1);
+  int index6 = data.indexOf(';', index5 + 1);
+  
+  xAcceleration = data.substring(0, index1).toFloat();
+  yAcceleration = data.substring(index1 + 1, index2).toFloat();
+  zAcceleration = data.substring(index2 + 1, index3).toFloat();
+  humidity = data.substring(index3 + 1, index4).toFloat();
+  pressure = data.substring(index4 + 1, index5).toFloat();
+  temperature = data.substring(index5 + 1, index6).toFloat();
+  particleConcentration = data.substring(index6 + 1).toInt();
 }
 
 void sendSensorData() {
-  mySerial.write((uint8_t*)&accX, sizeof(accX));
-  mySerial.write((uint8_t*)&accY, sizeof(accY));
-  mySerial.write((uint8_t*)&accZ, sizeof(accZ));
+  mySerial.write((uint8_t*)&xAcceleration, sizeof(xAcceleration));
+  mySerial.write((uint8_t*)&yAcceleration, sizeof(yAcceleration));
+  mySerial.write((uint8_t*)&zAcceleration, sizeof(zAcceleration));
   mySerial.write((uint8_t*)&temperature, sizeof(temperature));
   mySerial.write((uint8_t*)&humidity, sizeof(humidity));
-  mySerial.write((uint8_t*)&pressure, sizeof(pressure));
   mySerial.write((uint8_t*)&pressure, sizeof(pressure));
   mySerial.write((uint8_t*)&particleConcentration, sizeof(particleConcentration));
 }

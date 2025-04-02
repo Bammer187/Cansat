@@ -56,7 +56,7 @@
 1. `(X) ISSUE-205: Receive and print message from transmitter`
 1. `(X) ISSUE-206: get ADXL 345 (acceleration) values`
 1. `(X) ISSUE-207: get BME280 (temperature, humidity, pressure) values`
-1. `() ISSUE-208: send sensor data via LoRa module`
-1. `() ISSUE-209: send sensor data from receiver to raspberry (serial, i2c)`
+1. `(X) ISSUE-208: send sensor data via LoRa module`
+1. `(X) ISSUE-209: send sensor data from receiver to raspberry (serial, i2c)`
 1. `(X) ISSUE-210: Python class to get sensor data and post it to server/database`
 1. `(X) ISSUE-211: get MQ-135 particle concentration data`
