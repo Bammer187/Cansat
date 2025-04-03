@@ -60,3 +60,6 @@
 1. `(X) ISSUE-209: send sensor data from receiver to raspberry (serial, i2c)`
 1. `(X) ISSUE-210: Python class to get sensor data and post it to server/database`
 1. `(X) ISSUE-211: get MQ-135 particle concentration data`
+
+## Extras
+1. `() ISSUE-301: Split main.py into two seperate files`
