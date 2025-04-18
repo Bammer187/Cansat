@@ -7,6 +7,7 @@
 - [Description](#description)
 - [Core Technologies](#core-technologies)
 - [Installation](#installation)
+- [Usage with Notebook](#usage-with-notebook)
 - [How it works](#how-it-works)
   - [System Architecture](#system-architecture)
 - [License](#license)
@@ -70,6 +71,37 @@ python tests/post_and_save_to_db.py
 cd Groundstation\ Raspberry/
 python esp_raspberry_start.py
 ```
+
+## Usage with Notebook
+You can easily replace the Raspberry Pi with a notebook (Windows, macOS, or Linux) to use this system. There are a few necessary steps to ensure everything works properly:
+
+1. Determine the Correct Port for Your ESP32:
+- **macOS/Linux**: Open a terminal and run one of the following commands to identify the port your ESP32 is connected to:
+```bash
+ls /dev/ttyUSB*
+```
+
+```bash
+ls /dev/ttyACM*
+```
+
+- **Windows** &rarr; Device Manager &rarr; Ports (COM & LPT)
+
+2. Modify `esp_serial_bridge.py`
+- Once you have identified the correct port, replace /dev/serial0 in esp32_serial_bridge.py with your specific port (e.g., /dev/ttyUSB0, COM3).
+
+- **Important**: Uncomment the sleep function inside the __init__ method to ensure proper initialization delay, especially on Windows where devices may need a moment to be fully recognized by the system.
+
+3. Modify `main.cpp` int the Receiver:
+- In the receiver code, comment out the line that initializes the mySerial object:
+
+4. Modify `sendSensorData` function:
+- In the sendSensorData function, uncomment all Serial.write() lines and comment or delete the mySerial.write() lines. You want to ensure that the data is transmitted over the USB port, not through the custom serial pins.
+
+5. Running the System:
+- After the above modifications, you should be able to connect your ESP32 to the notebook via USB and start the system.
+- However, note that there may be some issues when running esp_raspberry_start.py in a virtual environment. The issue could be due to an incompatibility with the serial package installed in the environment.
+  - If you encounter errors, try **running the script outside the virtual environment**, as this has resolved similar issues in our tests.
 
 ## How it works
 By default, the system updates sensor readings every second. This interval can be adjusted by modifying the **settings.ts** file for the GUI, changing the sleep durations in the Python scripts, and updating the runEvery() method in the C++ code.
