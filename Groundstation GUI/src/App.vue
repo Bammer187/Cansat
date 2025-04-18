@@ -24,7 +24,7 @@
         <Column field="temperature" header="Temperature"></Column>
         <Column field="pressure" header="Pressure"></Column>
         <Column field="humidity" header="Humidity"></Column>
-        <Column field="particle" header="Particle concentration"></Column>
+        <Column field="particle" header="Part. conc."></Column>
         <Column field="x" header="X"></Column>
         <Column field="y" header="Y"></Column>
         <Column field="z" header="Z"></Column>

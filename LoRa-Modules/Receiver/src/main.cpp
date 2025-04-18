@@ -21,7 +21,7 @@ float xAcceleration = 0.0f, yAcceleration = 0.0f, zAcceleration = 0.0f;
 float temperature = 0.0f;
 float humidity = 0.0f;
 float pressure = 0.0f;
-int particleConcentration = 0;
+float particleConcentration = 0.0f;
 
 boolean runEvery(unsigned long interval);
 void parseData(String data);
@@ -93,4 +93,15 @@ void sendSensorData() {
   mySerial.write((uint8_t*)&humidity, sizeof(humidity));
   mySerial.write((uint8_t*)&pressure, sizeof(pressure));
   mySerial.write((uint8_t*)&particleConcentration, sizeof(particleConcentration));
+
+  // Uncomment if you want to connect the ESP to a Notebook
+  /*
+  Serial.write((uint8_t*)&xAcceleration, sizeof(xAcceleration));
+  Serial.write((uint8_t*)&yAcceleration, sizeof(yAcceleration));
+  Serial.write((uint8_t*)&zAcceleration, sizeof(zAcceleration));
+  Serial.write((uint8_t*)&temperature, sizeof(temperature));
+  Serial.write((uint8_t*)&humidity, sizeof(humidity));
+  Serial.write((uint8_t*)&pressure, sizeof(pressure));
+  Serial.write((uint8_t*)&particleConcentration, sizeof(particleConcentration));
+  */
 }

@@ -6,8 +6,9 @@ import sqlite3
 
 
 class Esp32SerialBridge:
-    def __init__(self, port="/dev/serial0", baudrate=115200, server_url="127.0.0.1:5000/send_data"):
+    def __init__(self, port="/dev/serial0", baudrate=115200, server_url="http://127.0.0.1:5000/send_data"):
         self.ser = serial.Serial(port, baudrate, timeout=1)
+        # sleep(2) # Uncomment if you want to connect the ESP to a Notebook
         self.server_url = server_url
         self.__data = {
             "temperature": 0,
@@ -55,6 +56,7 @@ class Esp32SerialBridge:
 
 
     def start(self):
-        self.receive_data()
-        self.send_to_server()
-        sleep(1)
+        while True:
+            self.receive_data()
+            self.send_to_server()
+            sleep(1)

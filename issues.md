@@ -62,4 +62,5 @@
 1. `(X) ISSUE-211: get MQ-135 particle concentration data`
 
 ## Extras
-1. `() ISSUE-301: Split main.py into two seperate files`
+1. `(X) ISSUE-301: Split main.py into two seperate files`
+1. `(X) ISSUE-302: Make it possible to connect the receiver to a notebook (no raspberry)`
