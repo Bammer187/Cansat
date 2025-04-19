@@ -32,13 +32,13 @@ The next steps will assume that you are starting in the **Cansat/** directory.
 
 2. Install node packages:
 ```bash
-cd Groundstation\ GUI/ # On Windows: cd '.\Groundstation GUI\'
+cd Groundstation\ GUI/ # On Windows (PS): cd '.\Groundstation GUI\'
 npm install
 ```
 
 3. Install python dependencies:
 ```bash
-cd Groundstation\ Raspberry/ # On Windows: cd '.\Groundstation Raspberry\'
+cd Groundstation\ Raspberry/ # On Windows (PS): cd '.\Groundstation Raspberry\'
 python -m venv venv
 source venv/bin/activate # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
@@ -87,13 +87,13 @@ ls /dev/ttyACM*
 
 - **Windows** &rarr; Device Manager &rarr; Ports (COM & LPT)
 
-2. Modify `esp_serial_bridge.py`
+2. Modify `esp_serial_bridge.py`:
 - Once you have identified the correct port, replace /dev/serial0 in esp32_serial_bridge.py with your specific port (e.g., /dev/ttyUSB0, COM3).
 
 - **Important**: Uncomment the sleep function inside the __init__ method to ensure proper initialization delay, especially on Windows where devices may need a moment to be fully recognized by the system.
 
-3. Modify `main.cpp` int the Receiver:
-- In the receiver code, comment out the line that initializes the mySerial object:
+3. Modify `main.cpp` in the Receiver:
+- In the receiver code, comment out the line that initializes the mySerial object.
 
 4. Modify `sendSensorData` function:
 - In the sendSensorData function, uncomment all Serial.write() lines and comment or delete the mySerial.write() lines. You want to ensure that the data is transmitted over the USB port, not through the custom serial pins.
