@@ -11,7 +11,7 @@ class SQLDataProvider(DataProvider):
         self.initDB(db_name)
 
 
-    def initDB(self, db_name: int) -> None:
+    def initDB(self, db_name: str) -> None:
         self.open_connection(db_name)
 
         create_table = '''CREATE TABLE IF NOT EXISTS sensorValues (
@@ -81,7 +81,7 @@ class SQLDataProvider(DataProvider):
         return result.fetchall()
     
 
-    def get_newest_db_entry(self) -> list:
+    def get_newest_db_entry(self) -> tuple:
         result = self.cursor.execute('SELECT * FROM sensorValues ORDER BY id DESC LIMIT 1;')
         self.connection.commit()
         return result.fetchone()
