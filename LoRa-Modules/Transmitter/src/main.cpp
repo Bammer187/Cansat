@@ -5,6 +5,7 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 #include <Adafruit_ADXL345_U.h>
+#include <MQ135.h>
 
 // LoRa-Pins
 #define LORA_CS 18
@@ -30,16 +31,13 @@ boolean runEvery(unsigned long interval);
 
 Adafruit_ADXL345_Unified accel = Adafruit_ADXL345_Unified(12345);
 Adafruit_BME280 bme;
+MQ135 mq135(analogMQ135);
 
 void setup(){
-  Serial.begin(9600);
+  Serial.begin(115200);
   SPI.begin(LORA_SCLK, LORA_MISO, LORA_MOSI);
   LoRa.setPins(LORA_CS, LORA_RST, LORA_DIO); 
   Wire.begin(I2C_SDA, I2C_SLC);
-
-  analogWrite(analogMQ135, HIGH);
-  // heat for 1 min
-  delay(60000);
 
   if (!LoRa.begin(frequency)) {
     Serial.println("LoRa init failed.");
@@ -52,7 +50,7 @@ void setup(){
   /* Initialise the sensor */
   if(!accel.begin())
   {
-    /* There was a problem detecting the ADXL345 ... check your connections */
+    // There was a problem detecting the ADXL345 ... check your connections
     Serial.println("Ooops, no ADXL345 detected ... Check your wiring!");
     while(1);
   }
@@ -83,15 +81,15 @@ void loop(){
     float pressure = bme.readPressure();
     float temperature = bme.readTemperature();
 
-    int particleConcentration = analogRead(analogMQ135);
+    float particleConcentration = mq135.getCorrectedPPM(temperature, humidity);
 
     String dataString = String(xAcceleration, 2) + ";" +
                         String(yAcceleration, 2) + ";" +
                         String(zAcceleration, 2) + ";" +
-                        String(temperature, 2) + ";" +
                         String(humidity, 2) + ";" +
                         String(pressure, 2) + ";" +
-                        String(particleConcentration);
+                        String(temperature, 2) + ";" +
+                        String(particleConcentration, 2);
 
     LoRa_sendMessage(dataString); // send a message
 
